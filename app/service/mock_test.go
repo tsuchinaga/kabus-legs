@@ -5,10 +5,10 @@ type testSettingStore struct {
 	setPasswordHis []string
 	isProd         bool
 	setIsProdHis   []bool
+	getToken       string
 	setTokenHis    []string
 }
 
-func (t *testSettingStore) IsPasswordSet() bool { panic("implement me") }
 func (t *testSettingStore) GetPassword() string { return t.getPassword }
 func (t *testSettingStore) SetPassword(password string) {
 	if t.setPasswordHis == nil {
@@ -16,7 +16,7 @@ func (t *testSettingStore) SetPassword(password string) {
 	}
 	t.setPasswordHis = append(t.setPasswordHis, password)
 }
-func (t *testSettingStore) GetToken() string { panic("implement me") }
+func (t *testSettingStore) GetToken() string { return t.getToken }
 func (t *testSettingStore) SetToken(token string) {
 	if t.setTokenHis == nil {
 		t.setTokenHis = []string{}

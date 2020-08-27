@@ -31,3 +31,8 @@ func (s *setting) IsProd() bool {
 func (s *setting) SaveToken(token string) {
 	s.settingStore.SetToken(token)
 }
+
+// GetToken - ストアからトークンを取得する処理を追加
+func (s *setting) GetToken() string {
+	return s.settingStore.GetToken()
+}
