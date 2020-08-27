@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
 )
 
 func Test_setting_IsPasswordSet(t *testing.T) {
@@ -146,6 +148,27 @@ func Test_setting_SetIsProd(t *testing.T) {
 			store.SetIsProd(test.arg)
 			if !reflect.DeepEqual(test.want, store.isProd) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, store.isProd)
+			}
+		})
+	}
+}
+
+func Test_GetSetting(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		want repository.SettingStore
+	}{
+		{name: "設定ストアを取得できる", want: &setting{}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got := GetSetting()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})
 	}

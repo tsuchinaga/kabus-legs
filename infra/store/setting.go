@@ -1,6 +1,26 @@
 package store
 
-import "sync"
+import (
+	"sync"
+
+	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
+)
+
+var (
+	settingStore    repository.SettingStore
+	settingStoreMtx sync.Mutex
+)
+
+// GetSetting - 設定のストアを取り出す
+func GetSetting() repository.SettingStore {
+	settingStoreMtx.Lock()
+	defer settingStoreMtx.Unlock()
+
+	if settingStore == nil {
+		settingStore = &setting{}
+	}
+	return settingStore
+}
 
 // setting - 設定ストア
 type setting struct {
@@ -45,6 +65,7 @@ func (s *setting) IsProd() bool {
 	return s.isProd
 }
 
+// SetIsProd - 本番かをセットする
 func (s *setting) SetIsProd(isProd bool) {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
