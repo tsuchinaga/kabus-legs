@@ -44,3 +44,9 @@ func (s *setting) IsProd() bool {
 	defer s.mtx.Unlock()
 	return s.isProd
 }
+
+func (s *setting) SetIsProd(isProd bool) {
+	s.mtx.Lock()
+	defer s.mtx.Unlock()
+	s.isProd = isProd
+}
