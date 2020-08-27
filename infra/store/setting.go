@@ -14,3 +14,10 @@ func (s *setting) IsPasswordSet() bool {
 	defer s.mtx.Unlock()
 	return s.password != ""
 }
+
+// SetPassword - パスワードをセットする
+func (s *setting) SetPassword(password string) {
+	s.mtx.Lock()
+	defer s.mtx.Unlock()
+	s.password = password
+}
