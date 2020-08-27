@@ -5,6 +5,7 @@ import "gitlab.com/tsuchinaga/kabus-legs/app/repository"
 // setting - 設定サービス
 type setting struct {
 	settingStore repository.SettingStore
+	kabuAPI      repository.KabuAPI
 }
 
 // SavePassword - パスワードを保存する
@@ -35,4 +36,9 @@ func (s *setting) SaveToken(token string) {
 // GetToken - ストアからトークンを取得する処理を追加
 func (s *setting) GetToken() string {
 	return s.settingStore.GetToken()
+}
+
+// GetNewToken - 新しいトークンを発行する
+func (s *setting) GetNewToken() (string, error) {
+	return s.kabuAPI.GetToken()
 }

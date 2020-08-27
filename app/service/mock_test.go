@@ -30,3 +30,10 @@ func (t *testSettingStore) SetIsProd(isProd bool) {
 	}
 	t.setIsProdHis = append(t.setIsProdHis, isProd)
 }
+
+type testKabusAPI struct {
+	getToken1 string
+	getToken2 error
+}
+
+func (t *testKabusAPI) GetToken() (string, error) { return t.getToken1, t.getToken2 }

@@ -1,8 +1,11 @@
 package service
 
 import (
+	"errors"
 	"reflect"
 	"testing"
+
+	"gitlab.com/tsuchinaga/kabus-legs/app"
 )
 
 func Test_setting_SavePassword(t *testing.T) {
@@ -145,6 +148,36 @@ func Test_setting_GetToken(t *testing.T) {
 			got := service.GetToken()
 			if !reflect.DeepEqual(test.want, got) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_Test_setting_GetNewToken(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name      string
+		getToken1 string
+		getToken2 error
+		want1     string
+		want2     error
+	}{
+		{name: "新しいトークンを取得する",
+			getToken1: "token", getToken2: nil,
+			want1: "token", want2: nil},
+		{name: "トークン取得に失敗",
+			getToken1: "", getToken2: app.APIRequestError,
+			want1: "", want2: app.APIRequestError},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			service := &setting{kabuAPI: &testKabusAPI{getToken1: test.getToken1, getToken2: test.getToken2}}
+			got1, got2 := service.GetNewToken()
+			if !reflect.DeepEqual(test.want1, got1) || !errors.Is(got2, test.want2) {
+				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
 			}
 		})
 	}
