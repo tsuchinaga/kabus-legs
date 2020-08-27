@@ -16,3 +16,8 @@ func (s *setting) SavePassword(password string) {
 func (s *setting) IsPasswordSet() bool {
 	return s.settingStore.GetPassword() != ""
 }
+
+// SetIsProd - 本番を向いているかをセットする
+func (s *setting) SetIsProd(isProd bool) {
+	s.settingStore.SetIsProd(isProd)
+}

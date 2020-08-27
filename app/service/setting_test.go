@@ -53,3 +53,27 @@ func Test_setting_IsSetPassword(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_SetIsProd(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  bool
+		want []bool
+	}{
+		{name: "本番であることを設定できる", arg: true, want: []bool{true}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingStore := &testSettingStore{}
+			service := &setting{settingStore: settingStore}
+			service.SetIsProd(test.arg)
+			if !reflect.DeepEqual(test.want, settingStore.setIsProdHis) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, settingStore.setIsProdHis)
+			}
+		})
+	}
+}
