@@ -6,6 +6,7 @@ import (
 
 type testSettingStore struct {
 	getPassword string
+	isProd      bool
 }
 
 func (t *testSettingStore) IsPasswordSet() bool { panic("implement me") }
@@ -13,7 +14,7 @@ func (t *testSettingStore) GetPassword() string { return t.getPassword }
 func (t *testSettingStore) SetPassword(string)  { panic("implement me") }
 func (t *testSettingStore) GetToken() string    { panic("implement me") }
 func (t *testSettingStore) SetToken(string)     { panic("implement me") }
-func (t *testSettingStore) IsProd() bool        { panic("implement me") }
+func (t *testSettingStore) IsProd() bool        { return t.isProd }
 func (t *testSettingStore) SetIsProd(bool)      { panic("implement me") }
 
 type testTokenRequester struct {
