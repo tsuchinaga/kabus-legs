@@ -104,3 +104,26 @@ func Test_setting_SetToken(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_IsProd(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		isProd bool
+		want   bool
+	}{
+		{name: "storeからisProdの値が取れる", isProd: true, want: true},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			store := &setting{isProd: test.isProd}
+			got := store.IsProd()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

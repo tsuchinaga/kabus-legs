@@ -6,6 +6,7 @@ import "sync"
 type setting struct {
 	password string // パスワード
 	token    string // トークン
+	isProd   bool   // 本番か
 	mtx      sync.Mutex
 }
 
@@ -35,4 +36,11 @@ func (s *setting) SetToken(token string) {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 	s.token = token
+}
+
+// IsProd - 本番向きかを返す
+func (s *setting) IsProd() bool {
+	s.mtx.Lock()
+	defer s.mtx.Unlock()
+	return s.isProd
 }
