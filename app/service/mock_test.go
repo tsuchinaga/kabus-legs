@@ -1,11 +1,12 @@
 package service
 
 type testSettingStore struct {
+	getPassword    string
 	setPasswordHis []string
 }
 
 func (t *testSettingStore) IsPasswordSet() bool { panic("implement me") }
-func (t *testSettingStore) GetPassword() string { panic("implement me") }
+func (t *testSettingStore) GetPassword() string { return t.getPassword }
 func (t *testSettingStore) SetPassword(password string) {
 	if t.setPasswordHis == nil {
 		t.setPasswordHis = []string{}

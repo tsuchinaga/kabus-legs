@@ -11,3 +11,8 @@ type setting struct {
 func (s *setting) SavePassword(password string) {
 	s.settingStore.SetPassword(password)
 }
+
+// IsPasswordSet - パスワードが設定済みか
+func (s *setting) IsPasswordSet() bool {
+	return s.settingStore.GetPassword() != ""
+}

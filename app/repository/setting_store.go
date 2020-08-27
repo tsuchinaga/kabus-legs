@@ -2,7 +2,6 @@ package repository
 
 // SettingStore - 設定のストア
 type SettingStore interface {
-	IsPasswordSet() bool
 	GetPassword() string
 	SetPassword(password string)
 	GetToken() string
