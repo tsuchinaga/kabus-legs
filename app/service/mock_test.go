@@ -3,6 +3,7 @@ package service
 type testSettingStore struct {
 	getPassword    string
 	setPasswordHis []string
+	isProd         bool
 	setIsProdHis   []bool
 }
 
@@ -16,7 +17,7 @@ func (t *testSettingStore) SetPassword(password string) {
 }
 func (t *testSettingStore) GetToken() string { panic("implement me") }
 func (t *testSettingStore) SetToken(string)  { panic("implement me") }
-func (t *testSettingStore) IsProd() bool     { panic("implement me") }
+func (t *testSettingStore) IsProd() bool     { return t.isProd }
 func (t *testSettingStore) SetIsProd(isProd bool) {
 	if t.setIsProdHis == nil {
 		t.setIsProdHis = []bool{}

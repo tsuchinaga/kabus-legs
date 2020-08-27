@@ -77,3 +77,27 @@ func Test_setting_SetIsProd(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_IsProd(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		isProd bool
+		want   bool
+	}{
+		{name: "本番を向いているかを返せる", isProd: true, want: true},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingStore := &testSettingStore{isProd: test.isProd}
+			service := &setting{settingStore: settingStore}
+			got := service.IsProd()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

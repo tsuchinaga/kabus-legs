@@ -21,3 +21,8 @@ func (s *setting) IsPasswordSet() bool {
 func (s *setting) SetIsProd(isProd bool) {
 	s.settingStore.SetIsProd(isProd)
 }
+
+// IsProd - 本番向きかを返す
+func (s *setting) IsProd() bool {
+	return s.settingStore.IsProd()
+}
