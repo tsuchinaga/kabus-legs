@@ -101,3 +101,27 @@ func Test_setting_IsProd(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_SaveToken(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  string
+		want []string
+	}{
+		{name: "tokenをセットできる", arg: "token", want: []string{"token"}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingStore := &testSettingStore{}
+			service := &setting{settingStore: settingStore}
+			service.SaveToken(test.arg)
+			if !reflect.DeepEqual(test.want, settingStore.setTokenHis) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, settingStore.setTokenHis)
+			}
+		})
+	}
+}

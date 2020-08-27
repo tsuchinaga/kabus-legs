@@ -26,3 +26,8 @@ func (s *setting) SetIsProd(isProd bool) {
 func (s *setting) IsProd() bool {
 	return s.settingStore.IsProd()
 }
+
+// SaveToken - トークンを保存する
+func (s *setting) SaveToken(token string) {
+	s.settingStore.SetToken(token)
+}
