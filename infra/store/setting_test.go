@@ -173,3 +173,26 @@ func Test_GetSetting(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_GetPassword(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		password string
+		want     string
+	}{
+		{name: "パスワードを取得できる", password: "password", want: "password"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			store := &setting{password: test.password}
+			got := store.GetPassword()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

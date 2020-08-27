@@ -71,3 +71,10 @@ func (s *setting) SetIsProd(isProd bool) {
 	defer s.mtx.Unlock()
 	s.isProd = isProd
 }
+
+// GetPassword - パスワードを取得する
+func (s *setting) GetPassword() string {
+	s.mtx.Lock()
+	defer s.mtx.Unlock()
+	return s.password
+}
