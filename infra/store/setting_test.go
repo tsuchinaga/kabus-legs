@@ -81,3 +81,26 @@ func Test_setting_GetToken(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_SetToken(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  string
+		want string
+	}{
+		{name: "tokenにセットできる", arg: "token", want: "token"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			store := &setting{}
+			store.SetToken(test.arg)
+			if !reflect.DeepEqual(test.want, store.token) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, store.token)
+			}
+		})
+	}
+}

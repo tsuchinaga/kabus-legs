@@ -29,3 +29,10 @@ func (s *setting) GetToken() string {
 	defer s.mtx.Unlock()
 	return s.token
 }
+
+// SetToken - トークンをセットする
+func (s *setting) SetToken(token string) {
+	s.mtx.Lock()
+	defer s.mtx.Unlock()
+	s.token = token
+}
