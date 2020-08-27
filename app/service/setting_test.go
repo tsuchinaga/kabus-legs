@@ -182,3 +182,26 @@ func Test_Test_setting_GetNewToken(t *testing.T) {
 		})
 	}
 }
+
+func Test_NewSetting(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+	}{
+		{name: "引数のrepositoryを保持した構造体が作られる"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingStore := &testSettingStore{}
+			kabuAPI := &testKabusAPI{}
+			want := &setting{settingStore: settingStore, kabuAPI: kabuAPI}
+			got := NewSetting(settingStore, kabuAPI)
+			if !reflect.DeepEqual(want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+			}
+		})
+	}
+}

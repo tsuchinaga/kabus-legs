@@ -2,6 +2,22 @@ package service
 
 import "gitlab.com/tsuchinaga/kabus-legs/app/repository"
 
+// Setting - 設定サービスのインターフェース
+type Setting interface {
+	SavePassword(password string)
+	IsPasswordSet() bool
+	SetIsProd(isProd bool)
+	IsProd() bool
+	SaveToken(token string)
+	GetToken() string
+	GetNewToken() (string, error)
+}
+
+// NewSetting - 設定サービスの生成
+func NewSetting(settingStore repository.SettingStore, kabuAPI repository.KabuAPI) Setting {
+	return &setting{settingStore: settingStore, kabuAPI: kabuAPI}
+}
+
 // setting - 設定サービス
 type setting struct {
 	settingStore repository.SettingStore
