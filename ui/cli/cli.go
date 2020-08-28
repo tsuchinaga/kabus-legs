@@ -11,7 +11,7 @@ func Run() error {
 	// 設定
 	g.AddSubCommand(gocli.NewCommand("setting", "設定").
 		AddSubCommand(gocli.NewCommand("status", "設定状況").SetAction(action.PrintSettingStatus)).
-		AddSubCommand(gocli.NewCommand("password", "パスワードの設定")).
+		AddSubCommand(gocli.NewCommand("password", "パスワードの設定").SetAction(action.SavePassword)).
 		AddSubCommand(gocli.NewCommand("prod", "本番向きかの設定")),
 	)
 

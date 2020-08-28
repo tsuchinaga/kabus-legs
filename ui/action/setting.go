@@ -18,3 +18,12 @@ func PrintSettingStatus(_ *bufio.Scanner) gocli.AfterAction {
 	fmt.Println(view.SettingStatus(status, err))
 	return gocli.AfterActionReturn
 }
+
+func SavePassword(bs *bufio.Scanner) gocli.AfterAction {
+	fmt.Println("パスワードを入力してください: ")
+	bs.Scan()
+	setting := di.NewSettingUseCase()
+	setting.SavePassword(bs.Text())
+	fmt.Println("パスワードを設定しました")
+	return gocli.AfterActionReturn
+}
