@@ -5,7 +5,17 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/usecase"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/kabu"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/store"
+	"gitlab.com/tsuchinaga/kabus-legs/ui/controller"
+	"gitlab.com/tsuchinaga/kabus-legs/ui/view"
 )
+
+// NewSettingController - DI済みの設定コントローラを生成する
+func NewSettingController() controller.Setting {
+	return controller.NewSetting(
+		NewSettingUseCase(),
+		view.NewSetting(),
+	)
+}
 
 // NewSettingUseCase - DI済みの設定ユースケースを生成する
 func NewSettingUseCase() usecase.Setting {

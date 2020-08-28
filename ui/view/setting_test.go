@@ -31,10 +31,20 @@ func Test_SettingStatus(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			got := SettingStatus(test.arg1, test.arg2)
+			view := &setting{}
+			got := view.SettingStatus(test.arg1, test.arg2)
 			if !reflect.DeepEqual(test.want, got) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})
+	}
+}
+
+func Test_NewSetting(t *testing.T) {
+	t.Parallel()
+	want := &setting{}
+	got := NewSetting()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
 }

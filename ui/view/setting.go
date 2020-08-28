@@ -6,8 +6,20 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
+// Setting - 設定ビューのインターフェース
+type Setting interface {
+	SettingStatus(status value.SettingStatus, err error) string
+}
+
+func NewSetting() Setting {
+	return &setting{}
+}
+
+// setting - 設定関連のビュー
+type setting struct{}
+
 // SettingStatus - 設定状況のビューを作成
-func SettingStatus(status value.SettingStatus, err error) string {
+func (s *setting) SettingStatus(status value.SettingStatus, err error) string {
 	if err != nil {
 		return fmt.Sprintf("エラーが発生しました(%s)", err)
 	}

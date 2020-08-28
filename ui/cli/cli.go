@@ -2,7 +2,6 @@ package cli
 
 import (
 	"gitlab.com/tsuchinaga/gocli"
-	"gitlab.com/tsuchinaga/kabus-legs/ui/action"
 )
 
 func Run() error {
@@ -14,9 +13,9 @@ func Run() error {
 
 	// 設定
 	g.AddSubCommand(gocli.NewCommand("setting", "設定").
-		AddSubCommand(gocli.NewCommand("status", "設定状況").SetAction(action.PrintSettingStatus)).
-		AddSubCommand(gocli.NewCommand("password", "パスワードの設定").SetAction(action.SavePassword)).
-		AddSubCommand(gocli.NewCommand("prod", "本番向きかの設定").SetAction(action.SetIsProd)),
+		AddSubCommand(gocli.NewCommand("status", "設定状況").SetAction(printSettingStatus)).
+		AddSubCommand(gocli.NewCommand("password", "パスワードの設定").SetAction(savePassword)).
+		AddSubCommand(gocli.NewCommand("prod", "本番向きかの設定").SetAction(setIsProd)),
 	)
 
 	// トークン
