@@ -1,13 +1,19 @@
 package usecase
 
 type testSettingService struct {
-	saveTokenHis []string
-	getToken     string
-	getNewToken1 string
-	getNewToken2 error
+	savePasswordHis []string
+	saveTokenHis    []string
+	getToken        string
+	getNewToken1    string
+	getNewToken2    error
 }
 
-func (t *testSettingService) SavePassword(string) { panic("implement me") }
+func (t *testSettingService) SavePassword(password string) {
+	if t.savePasswordHis == nil {
+		t.savePasswordHis = []string{}
+	}
+	t.savePasswordHis = append(t.savePasswordHis, password)
+}
 func (t *testSettingService) IsPasswordSet() bool { panic("implement me") }
 func (t *testSettingService) SetIsProd(bool)      { panic("implement me") }
 func (t *testSettingService) IsProd() bool        { panic("implement me") }

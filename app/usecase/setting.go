@@ -20,3 +20,8 @@ func (u *setting) GetNewToken() (string, error) {
 func (u *setting) SaveToken(token string) {
 	u.settingService.SaveToken(token)
 }
+
+// SavePassword - 引数のパスワードを保存する
+func (u *setting) SavePassword(password string) {
+	u.settingService.SavePassword(password)
+}
