@@ -32,7 +32,12 @@ func (u *setting) GetToken() (string, error) {
 
 // GetNewToken - APIを使って新しいトークンを取得する
 func (u *setting) GetNewToken() (string, error) {
-	return u.settingService.GetNewToken()
+	token, err := u.settingService.GetNewToken()
+	if err != nil {
+		return "", err
+	}
+	u.settingService.SaveToken(token)
+	return token, nil
 }
 
 // SaveToken - 引数のトークンを保存する

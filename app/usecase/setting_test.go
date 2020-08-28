@@ -43,10 +43,11 @@ func Test_setting_GetNewToken(t *testing.T) {
 		getNewToken2 error
 		want1        string
 		want2        error
+		wantHis      []string
 	}{
-		{name: "新しいトークンを取得する", getNewToken1: "token", getNewToken2: nil, want1: "token", want2: nil},
+		{name: "新しいトークンを取得する", getNewToken1: "token", getNewToken2: nil, want1: "token", want2: nil, wantHis: []string{"token"}},
 		{name: "新しいトークン取得でエラーがあったらエラーを返す",
-			getNewToken1: "", getNewToken2: app.APIRequestError, want1: "", want2: app.APIRequestError},
+			getNewToken1: "", getNewToken2: app.APIRequestError, want1: "", want2: app.APIRequestError, wantHis: nil},
 	}
 
 	for _, test := range tests {
@@ -56,8 +57,9 @@ func Test_setting_GetNewToken(t *testing.T) {
 			settingService := &testSettingService{getNewToken1: test.getNewToken1, getNewToken2: test.getNewToken2}
 			usecase := &setting{settingService: settingService}
 			got1, got2 := usecase.GetNewToken()
-			if !reflect.DeepEqual(test.want1, got1) || !errors.Is(test.want2, got2) {
-				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
+			if !reflect.DeepEqual(test.want1, got1) || !errors.Is(test.want2, got2) || !reflect.DeepEqual(test.wantHis, settingService.saveTokenHis) {
+				t.Errorf("%s error\nwant: %+v, %+v, %+v\ngot: %+v, %+v, %+v\n", t.Name(),
+					test.want1, test.want2, test.wantHis, got1, got2, settingService.saveTokenHis)
 			}
 		})
 	}
