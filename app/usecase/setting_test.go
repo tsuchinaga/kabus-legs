@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app"
 )
 
@@ -128,6 +130,33 @@ func Test_setting_SetIsProd(t *testing.T) {
 			usecase.SetIsProd(test.arg)
 			if !reflect.DeepEqual(test.want, settingService.setIsProdHis) {
 				t.Errorf("%s error\nwant: %+v\nhistory: %+v\n", t.Name(), test.want, settingService.setIsProdHis)
+			}
+		})
+	}
+}
+
+func Test_GetSettingStatus(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name          string
+		isPasswordSet bool
+		isProd        bool
+		want1         value.SettingStatus
+		want2         error
+	}{
+		{name: "パスワードが設定されているかと本番向きかを返す",
+			isPasswordSet: true, isProd: true, want1: value.SettingStatus{IsPasswordSet: true, IsProd: true}, want2: nil},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingService := &testSettingService{isPasswordSet: test.isPasswordSet, isProd: test.isProd}
+			usecase := &setting{settingService: settingService}
+			got1, got2 := usecase.GetSettingStatus()
+			if !reflect.DeepEqual(test.want1, got1) || !errors.Is(got2, test.want2) {
+				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
 			}
 		})
 	}

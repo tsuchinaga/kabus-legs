@@ -1,6 +1,9 @@
 package usecase
 
-import "gitlab.com/tsuchinaga/kabus-legs/app/service"
+import (
+	"gitlab.com/tsuchinaga/kabus-legs/app/service"
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+)
 
 type setting struct {
 	settingService service.Setting
@@ -29,4 +32,9 @@ func (u *setting) SavePassword(password string) {
 // SetIsProd - 本番向きか検証向きかを設定する
 func (u *setting) SetIsProd(isProd bool) {
 	u.settingService.SetIsProd(isProd)
+}
+
+// GetSettingStatus - 設定の状況を取得する
+func (u *setting) GetSettingStatus() (value.SettingStatus, error) {
+	return value.SettingStatus{IsPasswordSet: u.settingService.IsPasswordSet(), IsProd: u.settingService.IsProd()}, nil
 }
