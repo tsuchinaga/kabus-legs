@@ -161,3 +161,25 @@ func Test_GetSettingStatus(t *testing.T) {
 		})
 	}
 }
+
+func Test_NewSetting(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+	}{
+		{name: "設定ユースケースが生成される"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingService := &testSettingService{}
+			want := &setting{settingService: settingService}
+			got := NewSetting(settingService)
+			if !reflect.DeepEqual(want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+			}
+		})
+	}
+}

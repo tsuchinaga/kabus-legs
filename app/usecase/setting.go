@@ -5,6 +5,22 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
+// Setting - 設定ユースケースのインターフェース
+type Setting interface {
+	GetToken() (string, error)
+	GetNewToken() (string, error)
+	SaveToken(token string)
+	SavePassword(password string)
+	SetIsProd(isProd bool)
+	GetSettingStatus() (value.SettingStatus, error)
+}
+
+// setting - 設定ユースケースの生成
+func NewSetting(settingService service.Setting) Setting {
+	return &setting{settingService: settingService}
+}
+
+// setting - 設定ユースケース
 type setting struct {
 	settingService service.Setting
 }
