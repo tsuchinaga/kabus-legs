@@ -108,3 +108,27 @@ func Test_setting_SavePassword(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_SetIsProd(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  bool
+		want []bool
+	}{
+		{name: "本番か検証かを設定する", arg: true, want: []bool{true}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingService := &testSettingService{}
+			usecase := &setting{settingService: settingService}
+			usecase.SetIsProd(test.arg)
+			if !reflect.DeepEqual(test.want, settingService.setIsProdHis) {
+				t.Errorf("%s error\nwant: %+v\nhistory: %+v\n", t.Name(), test.want, settingService.setIsProdHis)
+			}
+		})
+	}
+}

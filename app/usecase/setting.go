@@ -25,3 +25,8 @@ func (u *setting) SaveToken(token string) {
 func (u *setting) SavePassword(password string) {
 	u.settingService.SavePassword(password)
 }
+
+// SetIsProd - 本番向きか検証向きかを設定する
+func (u *setting) SetIsProd(isProd bool) {
+	u.settingService.SetIsProd(isProd)
+}
