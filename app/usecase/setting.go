@@ -15,3 +15,8 @@ func (u *setting) GetToken() (string, error) {
 func (u *setting) GetNewToken() (string, error) {
 	return u.settingService.GetNewToken()
 }
+
+// SaveToken - 引数のトークンを保存する
+func (u *setting) SaveToken(token string) {
+	u.settingService.SaveToken(token)
+}

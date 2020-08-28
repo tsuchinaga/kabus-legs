@@ -60,3 +60,27 @@ func Test_setting_GetNewToken(t *testing.T) {
 		})
 	}
 }
+
+func Test_setting_SaveToken(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  string
+		want []string
+	}{
+		{name: "トークンをセットする", arg: "token", want: []string{"token"}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			settingService := &testSettingService{}
+			usecase := &setting{settingService: settingService}
+			usecase.SaveToken(test.arg)
+			if !reflect.DeepEqual(test.want, settingService.saveTokenHis) {
+				t.Errorf("%s error\nwant: %+v\nhistory: %+v\n", t.Name(), test.want, settingService.saveTokenHis)
+			}
+		})
+	}
+}
