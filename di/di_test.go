@@ -42,3 +42,12 @@ func Test_NewSettingUseCase(t *testing.T) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
 }
+
+func Test_NewTokenController(t *testing.T) {
+	t.Parallel()
+	want := controller.NewToken(NewSettingUseCase())
+	got := NewTokenController()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}

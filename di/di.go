@@ -17,6 +17,11 @@ func NewSettingController() controller.Setting {
 	)
 }
 
+// NewTokenController - DI済みのトークンコントローラを生成する
+func NewTokenController() controller.Token {
+	return controller.NewToken(NewSettingUseCase())
+}
+
 // NewSettingUseCase - DI済みの設定ユースケースを生成する
 func NewSettingUseCase() usecase.Setting {
 	return usecase.NewSetting(
