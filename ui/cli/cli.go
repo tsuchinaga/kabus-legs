@@ -6,13 +6,17 @@ import (
 )
 
 func Run() error {
+	gocli.SetCommandNotExistsMessage("コマンドがありません")
+	gocli.SetHelpDescription("ヘルプメッセージ")
+	gocli.SetReturnDescription("前のメニューに戻る")
+	gocli.SetExitDescription("終了")
 	g := gocli.NewGocli()
 
 	// 設定
 	g.AddSubCommand(gocli.NewCommand("setting", "設定").
 		AddSubCommand(gocli.NewCommand("status", "設定状況").SetAction(action.PrintSettingStatus)).
 		AddSubCommand(gocli.NewCommand("password", "パスワードの設定").SetAction(action.SavePassword)).
-		AddSubCommand(gocli.NewCommand("prod", "本番向きかの設定")),
+		AddSubCommand(gocli.NewCommand("prod", "本番向きかの設定").SetAction(action.SetIsProd)),
 	)
 
 	// トークン
