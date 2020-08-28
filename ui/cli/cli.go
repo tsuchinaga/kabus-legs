@@ -20,9 +20,9 @@ func Run() error {
 
 	// トークン
 	g.AddSubCommand(gocli.NewCommand("token", "トークン").
-		AddSubCommand(gocli.NewCommand("get", "現在のトークンの取得")).
-		AddSubCommand(gocli.NewCommand("new", "新しいトークンの発行")).
-		AddSubCommand(gocli.NewCommand("set", "任意のトークンの利用")),
+		AddSubCommand(gocli.NewCommand("get", "現在のトークンの取得").SetAction(getToken)).
+		AddSubCommand(gocli.NewCommand("new", "新しいトークンの発行").SetAction(refreshToken)).
+		AddSubCommand(gocli.NewCommand("set", "任意のトークンの利用").SetAction(setToken)),
 	)
 
 	return g.Run()
