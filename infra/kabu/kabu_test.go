@@ -48,20 +48,31 @@ func Test_kabu_GetToken(t *testing.T) {
 func Test_NewKabuAPI(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name   string
-		isProd bool
-		want   repository.KabuAPI
+		name         string
+		settingStore repository.SettingStore
+		want         repository.KabuAPI
 	}{
-		{name: "本番向き", isProd: true, want: &kabu{settingStore: &testSettingStore{isProd: true}, tokenRequester: kabus.NewTokenRequester(true)}},
-		{name: "検証向き", isProd: false, want: &kabu{settingStore: &testSettingStore{isProd: false}, tokenRequester: kabus.NewTokenRequester(false)}},
+		{name: "本番向き", settingStore: &testSettingStore{isProd: true, token: "token"},
+			want: &kabu{
+				settingStore:        &testSettingStore{isProd: true, token: "token"},
+				tokenRequester:      kabus.NewTokenRequester(true),
+				registerRequester:   kabus.NewRegisterRequester("token", true),
+				unregisterRequester: kabus.NewUnregisterRequester("token", true),
+			}},
+		{name: "検証向き", settingStore: &testSettingStore{isProd: false, token: "token"},
+			want: &kabu{
+				settingStore:        &testSettingStore{isProd: false, token: "token"},
+				tokenRequester:      kabus.NewTokenRequester(false),
+				registerRequester:   kabus.NewRegisterRequester("token", false),
+				unregisterRequester: kabus.NewUnregisterRequester("token", false),
+			}},
 	}
 
 	for _, test := range tests {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			settingStore := &testSettingStore{isProd: test.isProd}
-			got := NewKabuAPI(settingStore)
+			got := NewKabuAPI(test.settingStore)
 			if !reflect.DeepEqual(test.want, got) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}

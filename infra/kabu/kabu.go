@@ -11,15 +11,19 @@ import (
 // NewKabuAPI - kabus apiを呼び出す処理群を生成する
 func NewKabuAPI(settingStore repository.SettingStore) repository.KabuAPI {
 	return &kabu{
-		settingStore:   settingStore,
-		tokenRequester: kabus.NewTokenRequester(settingStore.IsProd()),
+		settingStore:        settingStore,
+		tokenRequester:      kabus.NewTokenRequester(settingStore.IsProd()),
+		registerRequester:   kabus.NewRegisterRequester(settingStore.GetToken(), settingStore.IsProd()),
+		unregisterRequester: kabus.NewUnregisterRequester(settingStore.GetToken(), settingStore.IsProd()),
 	}
 }
 
 // kabu - kabus apiを呼び出す処理をまとめた構造体
 type kabu struct {
-	settingStore   repository.SettingStore
-	tokenRequester TokenRequester
+	settingStore        repository.SettingStore
+	tokenRequester      TokenRequester
+	registerRequester   RegisterRequester
+	unregisterRequester UnregisterRequester
 }
 
 // GetToken - トークンの取得
