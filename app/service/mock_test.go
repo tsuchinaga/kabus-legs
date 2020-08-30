@@ -42,9 +42,11 @@ type testKabusAPI struct {
 
 func (t *testKabusAPI) GetToken() (string, error) { return t.getToken1, t.getToken2 }
 
-type testSymbolStore struct{}
+type testSymbolStore struct {
+	getAll []value.SymbolLeg
+}
 
-func (t testSymbolStore) IsExists(value.SymbolLeg) bool { panic("implement me") }
-func (t testSymbolStore) Add(value.SymbolLeg)           { panic("implement me") }
-func (t testSymbolStore) GetAll() []value.SymbolLeg     { panic("implement me") }
-func (t testSymbolStore) DeleteByIndex(int)             { panic("implement me") }
+func (t *testSymbolStore) IsExists(value.SymbolLeg) bool { panic("implement me") }
+func (t *testSymbolStore) Add(value.SymbolLeg)           { panic("implement me") }
+func (t *testSymbolStore) GetAll() []value.SymbolLeg     { return t.getAll }
+func (t *testSymbolStore) DeleteByIndex(int)             { panic("implement me") }

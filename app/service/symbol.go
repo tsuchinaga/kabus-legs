@@ -25,7 +25,10 @@ type symbol struct {
 	kabuAPI     repository.KabuAPI
 }
 
-func (s symbol) GetAll() []value.SymbolLeg                   { panic("implement me") }
+// GetAll - ストアに保持されているデータを取得する
+func (s symbol) GetAll() []value.SymbolLeg {
+	return s.symbolStore.GetAll()
+}
 func (s symbol) AddSymbol(value.SymbolLeg)                   { panic("implement me") }
 func (s symbol) DeleteSymbolByIndex(int)                     { panic("implement me") }
 func (s symbol) SendRegister(string, value.Exchange) error   { panic("implement me") }
