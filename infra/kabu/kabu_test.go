@@ -138,3 +138,33 @@ func Test_kabu_RegisterSymbol(t *testing.T) {
 		})
 	}
 }
+
+func Test_kabu_UnregisterSymbol(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name  string
+		exec1 *kabus.UnregisterResponse
+		exec2 error
+		arg1  string
+		arg2  value.Exchange
+		want  error
+	}{
+		{name: "errorが変えされたらラップして返す",
+			exec2: errors.New("error message"),
+			want:  app.APIRequestError},
+		{name: "errorがなければnilを返す",
+			want: nil},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			unregisterRequester := &testUnregisterRequester{exec1: test.exec1, exec2: test.exec2}
+			got := (&kabu{unregisterRequester: unregisterRequester}).UnregisterSymbol(test.arg1, test.arg2)
+			if !errors.Is(got, test.want) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

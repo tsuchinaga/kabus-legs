@@ -35,3 +35,12 @@ type testRegisterRequester struct {
 func (t *testRegisterRequester) Exec(kabus.RegisterRequest) (*kabus.RegisterResponse, error) {
 	return t.exec1, t.exec2
 }
+
+type testUnregisterRequester struct {
+	exec1 *kabus.UnregisterResponse
+	exec2 error
+}
+
+func (t *testUnregisterRequester) Exec(kabus.UnregisterRequest) (*kabus.UnregisterResponse, error) {
+	return t.exec1, t.exec2
+}
