@@ -29,7 +29,12 @@ type symbol struct {
 func (s symbol) GetAll() []value.SymbolLeg {
 	return s.symbolStore.GetAll()
 }
-func (s symbol) AddSymbol(value.SymbolLeg)                   { panic("implement me") }
+
+// AddSymbol - ストアに引数の銘柄足を追加する
+func (s symbol) AddSymbol(symbolLeg value.SymbolLeg) {
+	s.symbolStore.Add(symbolLeg)
+}
+
 func (s symbol) DeleteSymbolByIndex(int)                     { panic("implement me") }
 func (s symbol) SendRegister(string, value.Exchange) error   { panic("implement me") }
 func (s symbol) SendUnregister(string, value.Exchange) error { panic("implement me") }

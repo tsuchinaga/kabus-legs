@@ -44,9 +44,15 @@ func (t *testKabusAPI) GetToken() (string, error) { return t.getToken1, t.getTok
 
 type testSymbolStore struct {
 	getAll []value.SymbolLeg
+	addHis []value.SymbolLeg
 }
 
 func (t *testSymbolStore) IsExists(value.SymbolLeg) bool { panic("implement me") }
-func (t *testSymbolStore) Add(value.SymbolLeg)           { panic("implement me") }
-func (t *testSymbolStore) GetAll() []value.SymbolLeg     { return t.getAll }
-func (t *testSymbolStore) DeleteByIndex(int)             { panic("implement me") }
+func (t *testSymbolStore) Add(symbolLeg value.SymbolLeg) {
+	if t.addHis == nil {
+		t.addHis = []value.SymbolLeg{}
+	}
+	t.addHis = append(t.addHis, symbolLeg)
+}
+func (t *testSymbolStore) GetAll() []value.SymbolLeg { return t.getAll }
+func (t *testSymbolStore) DeleteByIndex(int)         { panic("implement me") }
