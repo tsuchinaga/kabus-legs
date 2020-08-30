@@ -26,15 +26,18 @@ type symbol struct {
 }
 
 // GetAll - ストアに保持されているデータを取得する
-func (s symbol) GetAll() []value.SymbolLeg {
+func (s *symbol) GetAll() []value.SymbolLeg {
 	return s.symbolStore.GetAll()
 }
 
 // AddSymbol - ストアに引数の銘柄足を追加する
-func (s symbol) AddSymbol(symbolLeg value.SymbolLeg) {
+func (s *symbol) AddSymbol(symbolLeg value.SymbolLeg) {
 	s.symbolStore.Add(symbolLeg)
 }
 
-func (s symbol) DeleteSymbolByIndex(int)                     { panic("implement me") }
-func (s symbol) SendRegister(string, value.Exchange) error   { panic("implement me") }
-func (s symbol) SendUnregister(string, value.Exchange) error { panic("implement me") }
+// DeleteSymbolByIndex - インデックスを指定して銘柄足を削除する
+func (s *symbol) DeleteSymbolByIndex(index int) {
+	s.symbolStore.DeleteByIndex(index)
+}
+func (s *symbol) SendRegister(string, value.Exchange) error   { panic("implement me") }
+func (s *symbol) SendUnregister(string, value.Exchange) error { panic("implement me") }

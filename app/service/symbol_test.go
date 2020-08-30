@@ -71,3 +71,28 @@ func Test_symbol_AddSymbol(t *testing.T) {
 		})
 	}
 }
+
+func Test_symbol_DeleteSymbolByIndex(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		arg  int
+		want []int
+	}{
+		{name: "インデックス番号をストアに渡す", arg: 3, want: []int{3}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			symbolStore := &testSymbolStore{}
+			service := &symbol{symbolStore: symbolStore}
+			service.DeleteSymbolByIndex(test.arg)
+			got := symbolStore.deleteByIndexHis
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
