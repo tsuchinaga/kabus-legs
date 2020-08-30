@@ -1,8 +1,11 @@
 package service
 
 import (
+	"errors"
 	"reflect"
 	"testing"
+
+	"gitlab.com/tsuchinaga/kabus-legs/app"
 
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
@@ -91,6 +94,35 @@ func Test_symbol_DeleteSymbolByIndex(t *testing.T) {
 			service.DeleteSymbolByIndex(test.arg)
 			got := symbolStore.deleteByIndexHis
 			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_symbol_RegisterSymbol(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name           string
+		registerSymbol error
+		arg1           string
+		arg2           value.Exchange
+		want           error
+	}{
+		{name: "repositoryからエラーが返されたらそのまま返す",
+			registerSymbol: app.APIRequestError,
+			want:           app.APIRequestError},
+		{name: "repositoryからエラーがなくてもそのまま返す"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			kabuAPI := &testKabusAPI{registerSymbol: test.registerSymbol}
+			service := &symbol{kabuAPI: kabuAPI}
+			got := service.SendRegister(test.arg1, test.arg2)
+			if !errors.Is(got, test.want) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})

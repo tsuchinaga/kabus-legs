@@ -39,5 +39,9 @@ func (s *symbol) AddSymbol(symbolLeg value.SymbolLeg) {
 func (s *symbol) DeleteSymbolByIndex(index int) {
 	s.symbolStore.DeleteByIndex(index)
 }
-func (s *symbol) SendRegister(string, value.Exchange) error   { panic("implement me") }
+
+// SendRegister - kabusapiを使って銘柄を登録する
+func (s *symbol) SendRegister(symbolCode string, exchange value.Exchange) error {
+	return s.kabuAPI.RegisterSymbol(symbolCode, exchange)
+}
 func (s *symbol) SendUnregister(string, value.Exchange) error { panic("implement me") }
