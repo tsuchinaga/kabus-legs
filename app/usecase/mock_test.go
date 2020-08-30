@@ -1,5 +1,9 @@
 package usecase
 
+import (
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+)
+
 type testSettingService struct {
 	savePasswordHis []string
 	isPasswordSet   bool
@@ -33,3 +37,13 @@ func (t *testSettingService) SaveToken(token string) {
 }
 func (t *testSettingService) GetToken() string             { return t.getToken }
 func (t *testSettingService) GetNewToken() (string, error) { return t.getNewToken1, t.getNewToken2 }
+
+type testSymbolService struct {
+	getAll []value.SymbolLeg
+}
+
+func (t *testSymbolService) GetAll() []value.SymbolLeg                   { return t.getAll }
+func (t *testSymbolService) AddSymbol(value.SymbolLeg)                   { panic("implement me") }
+func (t *testSymbolService) DeleteSymbolByIndex(int)                     { panic("implement me") }
+func (t *testSymbolService) SendRegister(string, value.Exchange) error   { panic("implement me") }
+func (t *testSymbolService) SendUnregister(string, value.Exchange) error { panic("implement me") }
