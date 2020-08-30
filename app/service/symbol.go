@@ -44,4 +44,8 @@ func (s *symbol) DeleteSymbolByIndex(index int) {
 func (s *symbol) SendRegister(symbolCode string, exchange value.Exchange) error {
 	return s.kabuAPI.RegisterSymbol(symbolCode, exchange)
 }
-func (s *symbol) SendUnregister(string, value.Exchange) error { panic("implement me") }
+
+// SendUnregister - kabusapiに銘柄登録解除を送る
+func (s *symbol) SendUnregister(symbolCode string, exchange value.Exchange) error {
+	return s.kabuAPI.UnregisterSymbol(symbolCode, exchange)
+}

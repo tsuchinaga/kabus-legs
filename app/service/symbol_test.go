@@ -128,3 +128,32 @@ func Test_symbol_RegisterSymbol(t *testing.T) {
 		})
 	}
 }
+
+func Test_symbol_SendUnregister(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name             string
+		unregisterSymbol error
+		arg1             string
+		arg2             value.Exchange
+		want             error
+	}{
+		{name: "repositoryからエラーが返されたらそのまま返す",
+			unregisterSymbol: app.APIRequestError,
+			want:             app.APIRequestError},
+		{name: "repositoryからエラーがなくてもそのまま返す"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			kabuAPI := &testKabusAPI{unregisterSymbol: test.unregisterSymbol}
+			service := &symbol{kabuAPI: kabuAPI}
+			got := service.SendUnregister(test.arg1, test.arg2)
+			if !errors.Is(got, test.want) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

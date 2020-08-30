@@ -36,16 +36,17 @@ func (t *testSettingStore) SetIsProd(isProd bool) {
 }
 
 type testKabusAPI struct {
-	getToken1      string
-	getToken2      error
-	registerSymbol error
+	getToken1        string
+	getToken2        error
+	registerSymbol   error
+	unregisterSymbol error
 }
 
 func (t *testKabusAPI) RegisterSymbol(string, value.Exchange) error {
 	return t.registerSymbol
 }
 func (t *testKabusAPI) UnregisterSymbol(string, value.Exchange) error {
-	panic("implement me")
+	return t.unregisterSymbol
 }
 func (t *testKabusAPI) GetToken() (string, error) { return t.getToken1, t.getToken2 }
 
