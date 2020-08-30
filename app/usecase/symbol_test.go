@@ -8,7 +8,7 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
-func Test_symbol_GetAll(t *testing.T) {
+func Test_symbolLeg_GetAll(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name   string
@@ -31,6 +31,34 @@ func Test_symbol_GetAll(t *testing.T) {
 			got1, got2 := usecase.GetAll()
 			if !reflect.DeepEqual(test.want1, got1) || !errors.Is(got2, test.want2) {
 				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
+			}
+		})
+	}
+}
+
+func Test_symbolLeg_Add(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name         string
+		sendRegister error
+		arg1         string
+		arg2         string
+		arg3         int
+		want         error
+	}{
+		{name: "sendRegisterに失敗したらエラーが返される"},
+		{name: "sendRegisterに成功したらストアに登録して正常終了"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			symbolService := &testSymbolService{sendRegister: test.sendRegister}
+			usecase := &symbolLeg{symbolService: symbolService}
+			got := usecase.Add(test.arg1, test.arg2, test.arg3)
+			if !errors.Is(got, test.want) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})
 	}

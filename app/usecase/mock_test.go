@@ -39,11 +39,12 @@ func (t *testSettingService) GetToken() string             { return t.getToken }
 func (t *testSettingService) GetNewToken() (string, error) { return t.getNewToken1, t.getNewToken2 }
 
 type testSymbolService struct {
-	getAll []value.SymbolLeg
+	getAll       []value.SymbolLeg
+	sendRegister error
 }
 
 func (t *testSymbolService) GetAll() []value.SymbolLeg                   { return t.getAll }
-func (t *testSymbolService) AddSymbol(value.SymbolLeg)                   { panic("implement me") }
+func (t *testSymbolService) AddSymbol(value.SymbolLeg)                   {}
 func (t *testSymbolService) DeleteSymbolByIndex(int)                     { panic("implement me") }
-func (t *testSymbolService) SendRegister(string, value.Exchange) error   { panic("implement me") }
+func (t *testSymbolService) SendRegister(string, value.Exchange) error   { return t.sendRegister }
 func (t *testSymbolService) SendUnregister(string, value.Exchange) error { panic("implement me") }
