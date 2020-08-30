@@ -36,7 +36,7 @@ func Test_symbolLeg_GetAll(t *testing.T) {
 	}
 }
 
-func Test_symbolLeg_Add(t *testing.T) {
+func Test_symbolLeg_Register(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name         string
@@ -56,7 +56,7 @@ func Test_symbolLeg_Add(t *testing.T) {
 			t.Parallel()
 			symbolService := &testSymbolService{sendRegister: test.sendRegister}
 			usecase := &symbolLeg{symbolService: symbolService}
-			got := usecase.Add(test.arg1, test.arg2, test.arg3)
+			got := usecase.Register(test.arg1, test.arg2, test.arg3)
 			if !errors.Is(got, test.want) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}

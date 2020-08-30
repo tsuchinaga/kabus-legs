@@ -8,8 +8,8 @@ import (
 // SymbolLeg - 銘柄足ユースケースのインターフェース
 type SymbolLeg interface {
 	GetAll() ([]value.SymbolLeg, error)
-	Add(symbolCode string, exchange string, legPeriod int) error
-	Delete(index int) error
+	Register(symbolCode string, exchange string, legPeriod int) error
+	Unregister(index int) error
 }
 
 // symbolLeg - 銘柄足ユースケース
@@ -22,8 +22,8 @@ func (s *symbolLeg) GetAll() ([]value.SymbolLeg, error) {
 	return s.symbolService.GetAll(), nil
 }
 
-// Add - 銘柄足を作成し、ストアへの登録とAPIへの登録を行う
-func (s *symbolLeg) Add(symbolCode string, exchange string, legPeriod int) error {
+// Register - 銘柄足を作成し、ストアへの登録とAPIへの登録を行う
+func (s *symbolLeg) Register(symbolCode string, exchange string, legPeriod int) error {
 	if err := s.symbolService.SendRegister(symbolCode, value.Exchange(exchange)); err != nil {
 		return err
 	}
@@ -32,4 +32,4 @@ func (s *symbolLeg) Add(symbolCode string, exchange string, legPeriod int) error
 	return nil
 }
 
-func (s *symbolLeg) Delete(int) error { panic("implement me") }
+func (s *symbolLeg) Unregister(int) error { panic("implement me") }
