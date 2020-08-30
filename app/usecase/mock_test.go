@@ -43,6 +43,7 @@ type testSymbolService struct {
 	sendRegister error
 }
 
+func (t *testSymbolService) GetByIndex(int) (value.SymbolLeg, error)     { panic("implement me") }
 func (t *testSymbolService) GetAll() []value.SymbolLeg                   { return t.getAll }
 func (t *testSymbolService) AddSymbol(value.SymbolLeg)                   {}
 func (t *testSymbolService) DeleteSymbolByIndex(int)                     { panic("implement me") }
