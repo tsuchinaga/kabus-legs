@@ -3,6 +3,8 @@ package kabu
 import (
 	"fmt"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+
 	"gitlab.com/tsuchinaga/go-kabusapi/kabus"
 	"gitlab.com/tsuchinaga/kabus-legs/app"
 	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
@@ -33,4 +35,32 @@ func (k *kabu) GetToken() (string, error) {
 		return "", fmt.Errorf("%v: %w", err, app.APIRequestError)
 	}
 	return res.Token, nil
+}
+
+// RegisterSymbol - 銘柄登録に引数の銘柄を渡す
+func (k *kabu) RegisterSymbol(symbolCode string, exchange value.Exchange) error {
+	_, err := k.registerRequester.Exec(kabus.RegisterRequest{
+		Symbols: []kabus.RegistSymbol{
+			{Symbol: symbolCode, Exchange: toKabusExchange(exchange)},
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("%v: %w", err, app.APIRequestError)
+	}
+	return nil
+}
+
+// toKabusExchange - kabusのExchangeに変換する
+func toKabusExchange(exchange value.Exchange) kabus.Exchange {
+	switch exchange {
+	case value.ExchangeT:
+		return kabus.ExchangeToushou
+	case value.ExchangeM:
+		return kabus.ExchangeMeishou
+	case value.ExchangeF:
+		return kabus.ExchangeFukushou
+	case value.ExchangeS:
+		return kabus.ExchangeSatsushou
+	}
+	return kabus.ExchangeUnspecified
 }

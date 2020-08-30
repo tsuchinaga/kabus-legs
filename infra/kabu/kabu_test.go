@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
 
 	"gitlab.com/tsuchinaga/kabus-legs/app"
@@ -74,6 +76,63 @@ func Test_NewKabuAPI(t *testing.T) {
 			t.Parallel()
 			got := NewKabuAPI(test.settingStore)
 			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_toKabusExchange(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		exchange value.Exchange
+		want     kabus.Exchange
+	}{
+		{name: "Tを変換できる", exchange: value.ExchangeT, want: kabus.ExchangeToushou},
+		{name: "Mを変換できる", exchange: value.ExchangeM, want: kabus.ExchangeMeishou},
+		{name: "Fを変換できる", exchange: value.ExchangeF, want: kabus.ExchangeFukushou},
+		{name: "Mを変換できる", exchange: value.ExchangeS, want: kabus.ExchangeSatsushou},
+		{name: "指定なしを変換できる", exchange: value.ExchangeUnspecified, want: kabus.ExchangeUnspecified},
+		{name: "想定外なのは全部指定なしになる", exchange: value.Exchange("foo"), want: kabus.ExchangeUnspecified},
+	}
+
+	for _, test := range tests {
+		test := test
+		got := toKabusExchange(test.exchange)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_kabu_RegisterSymbol(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name  string
+		exec1 *kabus.RegisterResponse
+		exec2 error
+		arg1  string
+		arg2  value.Exchange
+		want  error
+	}{
+		{name: "errorが変えされたらラップして返す",
+			exec2: errors.New("error message"),
+			want:  app.APIRequestError},
+		{name: "errorがなければnilを返す",
+			want: nil},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			registerRequester := &testRegisterRequester{exec1: test.exec1, exec2: test.exec2}
+			got := (&kabu{registerRequester: registerRequester}).RegisterSymbol(test.arg1, test.arg2)
+			if !errors.Is(got, test.want) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})

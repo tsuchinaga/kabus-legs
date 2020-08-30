@@ -26,3 +26,12 @@ type testTokenRequester struct {
 func (t *testTokenRequester) Exec(kabus.TokenRequest) (*kabus.TokenResponse, error) {
 	return t.ret1, t.ret2
 }
+
+type testRegisterRequester struct {
+	exec1 *kabus.RegisterResponse
+	exec2 error
+}
+
+func (t *testRegisterRequester) Exec(kabus.RegisterRequest) (*kabus.RegisterResponse, error) {
+	return t.exec1, t.exec2
+}
