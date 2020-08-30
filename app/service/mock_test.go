@@ -1,5 +1,9 @@
 package service
 
+import (
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+)
+
 type testSettingStore struct {
 	getPassword    string
 	setPasswordHis []string
@@ -37,3 +41,10 @@ type testKabusAPI struct {
 }
 
 func (t *testKabusAPI) GetToken() (string, error) { return t.getToken1, t.getToken2 }
+
+type testSymbolStore struct{}
+
+func (t testSymbolStore) IsExists(value.SymbolLeg) bool { panic("implement me") }
+func (t testSymbolStore) Add(value.SymbolLeg)           { panic("implement me") }
+func (t testSymbolStore) GetAll() []value.SymbolLeg     { panic("implement me") }
+func (t testSymbolStore) DeleteByIndex(int)             { panic("implement me") }
