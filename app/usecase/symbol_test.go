@@ -99,3 +99,13 @@ func Test_symbolLeg_Unregister(t *testing.T) {
 		})
 	}
 }
+
+func Test_NewSymbolLeg(t *testing.T) {
+	t.Parallel()
+	symbolService := &testSymbolService{}
+	want := &symbolLeg{symbolService: symbolService}
+	got := NewSymbolLeg(symbolService)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}

@@ -12,6 +12,11 @@ type SymbolLeg interface {
 	Unregister(index int) error
 }
 
+// NewSymbolLeg - 銘柄足ユースケースの生成
+func NewSymbolLeg(symbolService service.Symbol) SymbolLeg {
+	return &symbolLeg{symbolService: symbolService}
+}
+
 // symbolLeg - 銘柄足ユースケース
 type symbolLeg struct {
 	symbolService service.Symbol
