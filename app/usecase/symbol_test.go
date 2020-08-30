@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
@@ -57,6 +59,40 @@ func Test_symbolLeg_Register(t *testing.T) {
 			symbolService := &testSymbolService{sendRegister: test.sendRegister}
 			usecase := &symbolLeg{symbolService: symbolService}
 			got := usecase.Register(test.arg1, test.arg2, test.arg3)
+			if !errors.Is(got, test.want) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_symbolLeg_Unregister(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name           string
+		getByIndex1    value.SymbolLeg
+		getByIndex2    error
+		sendUnregister error
+		arg            int
+		want           error
+	}{
+		{name: "該当インデックスが存在しなければエラー",
+			getByIndex2: app.DataNotFoundError,
+			want:        app.DataNotFoundError},
+		{name: "銘柄登録会場APIをたたいてエラーが返されればエラー",
+			sendUnregister: app.APIRequestError,
+			want:           app.APIRequestError},
+		{name: "該当インデックスが存在して登録解除に成功したらストアからも消して正常終了",
+			want: nil},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			symbolService := &testSymbolService{getByIndex1: test.getByIndex1, getByIndex2: test.getByIndex2, sendUnregister: test.sendUnregister}
+			usecase := &symbolLeg{symbolService: symbolService}
+			got := usecase.Unregister(test.arg)
 			if !errors.Is(got, test.want) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}

@@ -32,4 +32,17 @@ func (s *symbolLeg) Register(symbolCode string, exchange string, legPeriod int) 
 	return nil
 }
 
-func (s *symbolLeg) Unregister(int) error { panic("implement me") }
+// Unregister - インデックスを指定して銘柄の登録を解除する
+func (s *symbolLeg) Unregister(index int) error {
+	symbol, err := s.symbolService.GetByIndex(index)
+	if err != nil {
+		return err
+	}
+
+	if err := s.symbolService.SendUnregister(symbol.SymbolCode, symbol.Exchange); err != nil {
+		return err
+	}
+
+	s.symbolService.DeleteSymbolByIndex(index)
+	return nil
+}
