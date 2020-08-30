@@ -1,6 +1,7 @@
 package service
 
 import (
+	"gitlab.com/tsuchinaga/kabus-legs/app"
 	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
@@ -8,6 +9,7 @@ import (
 // symbol - 銘柄足サービスのインターフェース
 type Symbol interface {
 	GetAll() []value.SymbolLeg
+	GetByIndex(index int) (value.SymbolLeg, error)
 	AddSymbol(symbolLeg value.SymbolLeg)
 	DeleteSymbolByIndex(index int)
 	SendRegister(symbolCode string, exchange value.Exchange) error
@@ -48,4 +50,13 @@ func (s *symbol) SendRegister(symbolCode string, exchange value.Exchange) error 
 // SendUnregister - kabusapiに銘柄登録解除を送る
 func (s *symbol) SendUnregister(symbolCode string, exchange value.Exchange) error {
 	return s.kabuAPI.UnregisterSymbol(symbolCode, exchange)
+}
+
+// GetByIndex - インデックスを指定してデータを取り出す
+func (s *symbol) GetByIndex(index int) (value.SymbolLeg, error) {
+	symbols := s.symbolStore.GetAll()
+	if index < 0 || len(symbols) <= index {
+		return value.SymbolLeg{}, app.DataNotFoundError
+	}
+	return symbols[index], nil
 }
