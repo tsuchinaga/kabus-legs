@@ -44,8 +44,10 @@ func (s *symbolLeg) Unregister(index int) error {
 		return err
 	}
 
-	if err := s.symbolService.SendUnregister(symbol.SymbolCode, symbol.Exchange); err != nil {
-		return err
+	if len(s.symbolService.GetBySymbol(symbol.SymbolCode, symbol.Exchange)) == 1 {
+		if err := s.symbolService.SendUnregister(symbol.SymbolCode, symbol.Exchange); err != nil {
+			return err
+		}
 	}
 
 	s.symbolService.DeleteSymbolByIndex(index)

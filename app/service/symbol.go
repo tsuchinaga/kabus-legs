@@ -10,6 +10,7 @@ import (
 type Symbol interface {
 	GetAll() []value.SymbolLeg
 	GetByIndex(index int) (value.SymbolLeg, error)
+	GetBySymbol(symbolCode string, exchange value.Exchange) []value.SymbolLeg
 	AddSymbol(symbolLeg value.SymbolLeg)
 	DeleteSymbolByIndex(index int)
 	SendRegister(symbolCode string, exchange value.Exchange) error
@@ -59,4 +60,15 @@ func (s *symbol) GetByIndex(index int) (value.SymbolLeg, error) {
 		return value.SymbolLeg{}, app.DataNotFoundError
 	}
 	return symbols[index], nil
+}
+
+// GetBySymbol - シンボルを指定して該当するデータをストアから取り出す
+func (s *symbol) GetBySymbol(symbolCode string, exchange value.Exchange) []value.SymbolLeg {
+	res := make([]value.SymbolLeg, 0)
+	for _, sl := range s.symbolStore.GetAll() {
+		if sl.SymbolCode == symbolCode && sl.Exchange == exchange {
+			res = append(res, sl)
+		}
+	}
+	return res
 }

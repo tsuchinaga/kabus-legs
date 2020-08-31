@@ -190,3 +190,45 @@ func Test_symbol_GetByIndex(t *testing.T) {
 		})
 	}
 }
+
+func Test_symbol_GetBySymbol(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name   string
+		getAll []value.SymbolLeg
+		arg1   string
+		arg2   value.Exchange
+		want   []value.SymbolLeg
+	}{
+		{name: "該当するデータがなければ空スライス",
+			getAll: []value.SymbolLeg{},
+			arg1:   "1234", arg2: value.ExchangeT,
+			want: []value.SymbolLeg{}},
+		{name: "該当するデータがあればスライスに入れて返す",
+			getAll: []value.SymbolLeg{
+				{SymbolCode: "1234", Exchange: value.ExchangeT, LegPeriod: 1},
+				{SymbolCode: "1234", Exchange: value.ExchangeT, LegPeriod: 3},
+				{SymbolCode: "1234", Exchange: value.ExchangeM, LegPeriod: 1},
+				{SymbolCode: "5678", Exchange: value.ExchangeT, LegPeriod: 1},
+				{SymbolCode: "5678", Exchange: value.ExchangeT, LegPeriod: 10},
+			},
+			arg1: "1234", arg2: value.ExchangeT,
+			want: []value.SymbolLeg{
+				{SymbolCode: "1234", Exchange: value.ExchangeT, LegPeriod: 1},
+				{SymbolCode: "1234", Exchange: value.ExchangeT, LegPeriod: 3},
+			}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			symbolStore := &testSymbolStore{getAll: test.getAll}
+			service := &symbol{symbolStore: symbolStore}
+			got := service.GetBySymbol(test.arg1, test.arg2)
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

@@ -44,8 +44,12 @@ type testSymbolService struct {
 	getByIndex1    value.SymbolLeg
 	getByIndex2    error
 	sendUnregister error
+	getBySymbol    []value.SymbolLeg
 }
 
+func (t *testSymbolService) GetBySymbol(string, value.Exchange) []value.SymbolLeg {
+	return t.getBySymbol
+}
 func (t *testSymbolService) GetByIndex(int) (value.SymbolLeg, error) {
 	return t.getByIndex1, t.getByIndex2
 }
