@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 
 	"gitlab.com/tsuchinaga/kabus-legs/app/usecase"
 
@@ -47,5 +48,35 @@ func (c *symbol) List(*bufio.Scanner) gocli.AfterAction {
 	}
 	return gocli.AfterActionReturn
 }
-func (c *symbol) Add(*bufio.Scanner) gocli.AfterAction    { panic("implement me") }
+
+// Add - 銘柄登録
+func (c *symbol) Add(bs *bufio.Scanner) gocli.AfterAction {
+	_, _ = fmt.Fprint(c.out, "銘柄コードを入力してください: ")
+	bs.Scan()
+	code := bs.Text()
+
+	_, _ = fmt.Fprint(c.out, "市場コードを入力してください(T: 東証, M: 名証, F: 福証, S: 札証): ")
+	bs.Scan()
+	exchange := bs.Text()
+	if exchange != "T" && exchange != "M" && exchange != "F" && exchange != "S" {
+		_, _ = fmt.Fprintln(c.out, "市場はT, M, F, Sで入力してください")
+		return gocli.AfterActionReturn
+	}
+
+	_, _ = fmt.Fprint(c.out, "足の長さを入力してください(分): ")
+	bs.Scan()
+	legPeriod, err := strconv.Atoi(bs.Text())
+	if err != nil {
+		_, _ = fmt.Fprintln(c.out, "足の長さは半角数字で入力してください")
+		return gocli.AfterActionReturn
+	}
+
+	if err := c.symbolLegUseCase.Register(code, exchange, legPeriod); err != nil {
+		_, _ = fmt.Fprintf(c.out, "銘柄登録でエラーが発生しました(%s)\n", err)
+		return gocli.AfterActionReturn
+	}
+
+	_, _ = fmt.Fprintln(c.out, "銘柄登録に成功しました")
+	return gocli.AfterActionReturn
+}
 func (c *symbol) Delete(*bufio.Scanner) gocli.AfterAction { panic("implement me") }

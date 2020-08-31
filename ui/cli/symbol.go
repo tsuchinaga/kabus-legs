@@ -12,3 +12,8 @@ import (
 func symbolList(bs *bufio.Scanner) gocli.AfterAction {
 	return di.NewSymbolController().List(bs)
 }
+
+// symbolAdd - 銘柄足の追加
+func symbolAdd(bs *bufio.Scanner) gocli.AfterAction {
+	return di.NewSymbolController().Add(bs)
+}

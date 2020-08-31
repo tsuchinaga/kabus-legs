@@ -66,3 +66,52 @@ func Test_NewSymbol(t *testing.T) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
 }
+
+func Test_symbol_Add(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		register error
+		in       io.Reader
+		want     string
+	}{
+		{name: "市場コードに指定文字以外を入れるとエラー",
+			in: bytes.NewBufferString("1234\nA\n"),
+			want: "銘柄コードを入力してください: " +
+				"市場コードを入力してください(T: 東証, M: 名証, F: 福証, S: 札証): " +
+				"市場はT, M, F, Sで入力してください\n"},
+		{name: "足の長さに数字以外を入れるとエラー",
+			in: bytes.NewBufferString("1234\nT\n５\n"),
+			want: "銘柄コードを入力してください: " +
+				"市場コードを入力してください(T: 東証, M: 名証, F: 福証, S: 札証): " +
+				"足の長さを入力してください(分): " +
+				"足の長さは半角数字で入力してください\n"},
+		{name: "registerに失敗するとエラー",
+			in:       bytes.NewBufferString("1234\nT\n5\n"),
+			register: errors.New("error message"),
+			want: "銘柄コードを入力してください: " +
+				"市場コードを入力してください(T: 東証, M: 名証, F: 福証, S: 札証): " +
+				"足の長さを入力してください(分): " +
+				"銘柄登録でエラーが発生しました(error message)\n"},
+		{name: "銘柄登録に成功すると成功メッセージ",
+			in: bytes.NewBufferString("1234\nT\n5\n"),
+			want: "銘柄コードを入力してください: " +
+				"市場コードを入力してください(T: 東証, M: 名証, F: 福証, S: 札証): " +
+				"足の長さを入力してください(分): " +
+				"銘柄登録に成功しました\n"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			w := new(bytes.Buffer)
+			controller := &symbol{out: w, symbolLegUseCase: &testSymbolLegUseCase{register: test.register}}
+			controller.Add(bufio.NewScanner(test.in))
+			got := w.String()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
