@@ -168,3 +168,26 @@ func Test_kabu_UnregisterSymbol(t *testing.T) {
 		})
 	}
 }
+
+func Test_convertExchange(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		exchange kabus.Exchange
+		want     value.Exchange
+	}{
+		{name: "東証を変換できる", exchange: kabus.ExchangeToushou, want: value.ExchangeT},
+		{name: "不明なのは指定なしにする", exchange: kabus.ExchangeUnspecified, want: value.ExchangeUnspecified},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got := convertExchange(test.exchange)
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

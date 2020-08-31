@@ -73,3 +73,19 @@ func toKabusExchange(exchange value.Exchange) kabus.Exchange {
 	}
 	return kabus.ExchangeUnspecified
 }
+
+// convertExchange - kabusのexchangeをappのexchangeに変換する
+func convertExchange(exchange kabus.Exchange) value.Exchange {
+	switch exchange {
+	case kabus.ExchangeToushou:
+		return value.ExchangeT
+	case kabus.ExchangeMeishou:
+		return value.ExchangeM
+	case kabus.ExchangeFukushou:
+		return value.ExchangeF
+	case kabus.ExchangeSatsushou:
+		return value.ExchangeS
+	default:
+		return value.ExchangeUnspecified
+	}
+}

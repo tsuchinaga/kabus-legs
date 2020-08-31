@@ -35,7 +35,12 @@ func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (
 	priceWS = &price{
 		settingStore: settingStore,
 		priceWSRequester: kabus.NewWSRequester(settingStore.IsProd(), func(message kabus.PriceMessage) error {
-			if err := f(value.Price{Price: message.CurrentPrice, Time: message.CurrentPriceTime}); err != nil {
+			if err := f(value.Price{
+				SymbolCode: message.Symbol,
+				Exchange:   convertExchange(message.Exchange),
+				Price:      message.CurrentPrice,
+				Time:       message.CurrentPriceTime,
+			}); err != nil {
 				return err
 			}
 			return nil
