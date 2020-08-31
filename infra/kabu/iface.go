@@ -16,3 +16,8 @@ type RegisterRequester interface {
 type UnregisterRequester interface {
 	Exec(request kabus.UnregisterRequest) (*kabus.UnregisterResponse, error)
 }
+
+type PriceWSRequester interface {
+	Open() error
+	Close() error
+}

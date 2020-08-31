@@ -44,3 +44,11 @@ type testUnregisterRequester struct {
 func (t *testUnregisterRequester) Exec(kabus.UnregisterRequest) (*kabus.UnregisterResponse, error) {
 	return t.exec1, t.exec2
 }
+
+type testPriceWSRequester struct {
+	open  error
+	close error
+}
+
+func (t *testPriceWSRequester) Open() error  { return t.open }
+func (t *testPriceWSRequester) Close() error { return t.close }
