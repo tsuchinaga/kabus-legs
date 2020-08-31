@@ -79,4 +79,22 @@ func (c *symbol) Add(bs *bufio.Scanner) gocli.AfterAction {
 	_, _ = fmt.Fprintln(c.out, "銘柄登録に成功しました")
 	return gocli.AfterActionReturn
 }
-func (c *symbol) Delete(*bufio.Scanner) gocli.AfterAction { panic("implement me") }
+
+// Delete - 指定された銘柄を削除
+func (c *symbol) Delete(bs *bufio.Scanner) gocli.AfterAction {
+	_, _ = fmt.Fprint(c.out, "No.を入力してください(No.はlistで確認できます): ")
+	bs.Scan()
+	index, err := strconv.Atoi(bs.Text())
+	if err != nil {
+		_, _ = fmt.Fprintln(c.out, "No.は半角数字で入力してください")
+		return gocli.AfterActionReturn
+	}
+
+	if err := c.symbolLegUseCase.Unregister(index); err != nil {
+		_, _ = fmt.Fprintf(c.out, "銘柄登録解除でエラーが発生しました(%s)\n", err)
+		return gocli.AfterActionReturn
+	}
+
+	_, _ = fmt.Fprintln(c.out, "銘柄登録解除に成功しました")
+	return gocli.AfterActionReturn
+}

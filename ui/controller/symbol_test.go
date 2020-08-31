@@ -115,3 +115,41 @@ func Test_symbol_Add(t *testing.T) {
 		})
 	}
 }
+
+func Test_symbol_Delete(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name       string
+		unregister error
+		in         io.Reader
+		want       string
+	}{
+		{name: "数字以外を入れるとエラー",
+			in: bytes.NewBufferString("１\n"),
+			want: "No.を入力してください(No.はlistで確認できます): " +
+				"No.は半角数字で入力してください\n"},
+		{name: "unregisterに失敗するとエラー",
+			in:         bytes.NewBufferString("1234\nT\n5\n"),
+			unregister: errors.New("error message"),
+			want: "No.を入力してください(No.はlistで確認できます): " +
+				"銘柄登録解除でエラーが発生しました(error message)\n"},
+		{name: "銘柄登録解除に成功すると成功メッセージ",
+			in: bytes.NewBufferString("1234\nT\n5\n"),
+			want: "No.を入力してください(No.はlistで確認できます): " +
+				"銘柄登録解除に成功しました\n"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			w := new(bytes.Buffer)
+			controller := &symbol{out: w, symbolLegUseCase: &testSymbolLegUseCase{unregister: test.unregister}}
+			controller.Delete(bufio.NewScanner(test.in))
+			got := w.String()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

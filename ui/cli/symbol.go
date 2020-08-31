@@ -17,3 +17,8 @@ func symbolList(bs *bufio.Scanner) gocli.AfterAction {
 func symbolAdd(bs *bufio.Scanner) gocli.AfterAction {
 	return di.NewSymbolController().Add(bs)
 }
+
+// symbolDelete - 銘柄足の削除
+func symbolDelete(bs *bufio.Scanner) gocli.AfterAction {
+	return di.NewSymbolController().Delete(bs)
+}

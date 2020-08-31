@@ -19,14 +19,15 @@ func (t *testSettingUseCase) GetSettingStatus() (value.SettingStatus, error) {
 }
 
 type testSymbolLegUseCase struct {
-	getAll1  []value.SymbolLeg
-	getAll2  error
-	register error
+	getAll1    []value.SymbolLeg
+	getAll2    error
+	register   error
+	unregister error
 }
 
 func (t *testSymbolLegUseCase) GetAll() ([]value.SymbolLeg, error) { return t.getAll1, t.getAll2 }
 func (t *testSymbolLegUseCase) Register(string, string, int) error { return t.register }
-func (t *testSymbolLegUseCase) Unregister(int) error               { panic("implement me") }
+func (t *testSymbolLegUseCase) Unregister(int) error               { return t.unregister }
 
 type testSettingView struct {
 	settingStatus string

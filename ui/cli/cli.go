@@ -29,7 +29,7 @@ func Run() error {
 	g.AddSubCommand(gocli.NewCommand("symbol", "銘柄").
 		AddSubCommand(gocli.NewCommand("list", "登録している銘柄の一覧").SetAction(symbolList)).
 		AddSubCommand(gocli.NewCommand("add", "足作成する銘柄の追加").SetAction(symbolAdd)).
-		AddSubCommand(gocli.NewCommand("delete", "足作成する銘柄の削除")))
+		AddSubCommand(gocli.NewCommand("delete", "足作成する銘柄の削除").SetAction(symbolDelete)))
 
 	return g.Run()
 }
