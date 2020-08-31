@@ -4,8 +4,26 @@ import (
 	"sort"
 	"sync"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
+
+var (
+	symbolStore    repository.SymbolStore
+	symbolStoreMtx sync.Mutex
+)
+
+// GetSymbol - 銘柄と足の長さのストアを取得する
+func GetSymbol() repository.SymbolStore {
+	symbolStoreMtx.Lock()
+	defer symbolStoreMtx.Unlock()
+
+	if symbolStore == nil {
+		symbolStore = &symbol{store: []value.SymbolLeg{}}
+	}
+	return symbolStore
+}
 
 // symbol - 銘柄と足の長さのストア
 type symbol struct {

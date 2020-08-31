@@ -192,3 +192,12 @@ func Test_symbol_DeleteByIndex(t *testing.T) {
 		})
 	}
 }
+
+func Test_GetSymbol(t *testing.T) {
+	t.Parallel()
+	want := &symbol{store: []value.SymbolLeg{}}
+	got := GetSymbol()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}
