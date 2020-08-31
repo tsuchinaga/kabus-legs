@@ -25,5 +25,11 @@ func Run() error {
 		AddSubCommand(gocli.NewCommand("set", "任意のトークンの利用").SetAction(setToken)),
 	)
 
+	// 銘柄足
+	g.AddSubCommand(gocli.NewCommand("symbol", "銘柄").
+		AddSubCommand(gocli.NewCommand("list", "登録している銘柄の一覧").SetAction(symbolList)).
+		AddSubCommand(gocli.NewCommand("add", "足作成する銘柄の追加")).
+		AddSubCommand(gocli.NewCommand("delete", "足作成する銘柄の削除")))
+
 	return g.Run()
 }

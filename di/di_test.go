@@ -51,3 +51,12 @@ func Test_NewTokenController(t *testing.T) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
 }
+
+func Test_NewSymbolController(t *testing.T) {
+	t.Parallel()
+	want := controller.NewSymbol(usecase.NewSymbolLeg(service.NewSymbol(store.GetSymbol(), kabu.NewKabuAPI(store.GetSetting()))))
+	got := NewSymbolController()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}

@@ -22,6 +22,20 @@ func NewTokenController() controller.Token {
 	return controller.NewToken(NewSettingUseCase())
 }
 
+// NewSymbolController - DI済みの銘柄コントローラを生成する
+func NewSymbolController() controller.Symbol {
+	return controller.NewSymbol(
+		usecase.NewSymbolLeg(
+			service.NewSymbol(
+				store.GetSymbol(),
+				kabu.NewKabuAPI(
+					store.GetSetting(),
+				),
+			),
+		),
+	)
+}
+
 // NewSettingUseCase - DI済みの設定ユースケースを生成する
 func NewSettingUseCase() usecase.Setting {
 	return usecase.NewSetting(
