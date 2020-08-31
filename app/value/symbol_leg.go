@@ -7,8 +7,8 @@ type SymbolLeg struct {
 	LegPeriod  int      // 足の長さ(分)
 }
 
-// Is - 一致しているかどうか
-func (s *SymbolLeg) Is(t SymbolLeg) bool {
+// Equal - 一致しているかどうか
+func (s *SymbolLeg) Equal(t SymbolLeg) bool {
 	return s.SymbolCode == t.SymbolCode && s.Exchange == t.Exchange && s.LegPeriod == t.LegPeriod
 }
 

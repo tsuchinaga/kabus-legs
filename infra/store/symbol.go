@@ -36,7 +36,7 @@ func (s *symbol) IsExists(symbolLeg value.SymbolLeg) bool {
 	s.mtx.Lock()
 	defer s.mtx.Unlock()
 	for _, sl := range s.store {
-		if sl.Is(symbolLeg) {
+		if sl.Equal(symbolLeg) {
 			return true
 		}
 	}

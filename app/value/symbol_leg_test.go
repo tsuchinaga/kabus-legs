@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func Test_SymbolLeg_Is(t *testing.T) {
+func Test_SymbolLeg_Equal(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
 		name string
@@ -27,7 +27,7 @@ func Test_SymbolLeg_Is(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			got := test.s.Is(test.t)
+			got := test.s.Equal(test.t)
 			if !reflect.DeepEqual(test.want, got) {
 				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
