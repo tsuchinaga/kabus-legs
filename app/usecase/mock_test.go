@@ -58,3 +58,11 @@ func (t *testSymbolService) AddSymbol(value.SymbolLeg)                   {}
 func (t *testSymbolService) DeleteSymbolByIndex(int)                     {}
 func (t *testSymbolService) SendRegister(string, value.Exchange) error   { return t.sendRegister }
 func (t *testSymbolService) SendUnregister(string, value.Exchange) error { return t.sendUnregister }
+
+type testPriceService struct {
+	startWebSocket error
+	stopWebSocket  error
+}
+
+func (t *testPriceService) StartWebSocket() error { return t.startWebSocket }
+func (t *testPriceService) StopWebSocket() error  { return t.stopWebSocket }
