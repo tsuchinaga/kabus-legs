@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app"
 
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
@@ -14,7 +16,7 @@ func Test_NewPrice(t *testing.T) {
 	// t.Parallel() // グローバル変数にアクセスするので直列テスト
 	tests := []struct {
 		name    string
-		priceWS Price
+		priceWS repository.PriceWebSocket
 		want1   bool
 		want2   bool
 	}{
@@ -43,7 +45,7 @@ func Test_GetPrice(t *testing.T) {
 	// t.Parallel() // グローバル変数にアクセスするので直列テスト
 	tests := []struct {
 		name    string
-		priceWS Price
+		priceWS repository.PriceWebSocket
 		want1   bool
 		want2   bool
 	}{

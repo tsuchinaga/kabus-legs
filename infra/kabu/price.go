@@ -12,19 +12,12 @@ import (
 )
 
 var (
-	priceWS    Price
+	priceWS    repository.PriceWebSocket
 	priceWSMtx sync.Mutex
 )
 
-// Price - 現値WebSocketのインターフェース
-type Price interface {
-	Start() error
-	Stop() error
-	IsStarted() bool
-}
-
 // NewPrice - 新しい現値WebSocketを生成する
-func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (Price, error) {
+func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (repository.PriceWebSocket, error) {
 	priceWSMtx.Lock()
 	defer priceWSMtx.Unlock()
 
@@ -51,7 +44,7 @@ func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (
 }
 
 // GetPrice - 既存の現値WebSocketを取得する
-func GetPrice() (Price, error) {
+func GetPrice() (repository.PriceWebSocket, error) {
 	priceWSMtx.Lock()
 	defer priceWSMtx.Unlock()
 
