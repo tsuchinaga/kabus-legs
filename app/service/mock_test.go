@@ -70,3 +70,12 @@ func (t *testSymbolStore) DeleteByIndex(i int) {
 	}
 	t.deleteByIndexHis = append(t.deleteByIndexHis, i)
 }
+
+type testPriceWebSocket struct {
+	start error
+	stop  error
+}
+
+func (t *testPriceWebSocket) Start() error    { return t.start }
+func (t *testPriceWebSocket) Stop() error     { return t.stop }
+func (t *testPriceWebSocket) IsStarted() bool { panic("implement me") }
