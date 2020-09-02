@@ -79,3 +79,14 @@ type testPriceWebSocket struct {
 func (t *testPriceWebSocket) Start() error    { return t.start }
 func (t *testPriceWebSocket) Stop() error     { return t.stop }
 func (t *testPriceWebSocket) IsStarted() bool { panic("implement me") }
+
+type testTickStore struct {
+	addHis []value.Price
+}
+
+func (t *testTickStore) Add(price value.Price) {
+	if t.addHis == nil {
+		t.addHis = []value.Price{}
+	}
+	t.addHis = append(t.addHis, price)
+}

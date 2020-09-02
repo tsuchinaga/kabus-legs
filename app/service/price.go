@@ -1,6 +1,8 @@
 package service
 
-import "gitlab.com/tsuchinaga/kabus-legs/app/repository"
+import (
+	"gitlab.com/tsuchinaga/kabus-legs/app/repository"
+)
 
 // price - 価格サービスのインターフェース
 type Price interface {
@@ -19,11 +21,11 @@ type price struct {
 }
 
 // StartWebSocket - WebSocketを開始する
-func (p *price) StartWebSocket() error {
-	return p.priceWebSocket.Start()
+func (s *price) StartWebSocket() error {
+	return s.priceWebSocket.Start()
 }
 
 // StopWebSocket - WebSocketを停止する
-func (p *price) StopWebSocket() error {
-	return p.priceWebSocket.Stop()
+func (s *price) StopWebSocket() error {
+	return s.priceWebSocket.Stop()
 }
