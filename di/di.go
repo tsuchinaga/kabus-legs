@@ -1,8 +1,11 @@
 package di
 
 import (
+	"fmt"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/service"
 	"gitlab.com/tsuchinaga/kabus-legs/app/usecase"
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/kabu"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/store"
 	"gitlab.com/tsuchinaga/kabus-legs/ui/controller"
@@ -34,6 +37,15 @@ func NewSymbolController() controller.Symbol {
 			),
 		),
 	)
+}
+
+// NewPriceController - DI済みの価格コントローラの生成
+func NewPriceController() controller.Price {
+	f := func(price value.Price) error { fmt.Printf("%+v\n", price); return nil } // TODO serviceから適切な関数をとるようにする
+	return controller.NewPrice(
+		usecase.NewPrice(
+			service.NewPriceWebSocket(
+				kabu.GetPrice(store.GetSetting(), f))))
 }
 
 // NewSettingUseCase - DI済みの設定ユースケースを生成する

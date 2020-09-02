@@ -31,5 +31,9 @@ func Run() error {
 		AddSubCommand(gocli.NewCommand("add", "足作成する銘柄の追加").SetAction(symbolAdd)).
 		AddSubCommand(gocli.NewCommand("delete", "足作成する銘柄の削除").SetAction(symbolDelete)))
 
+	// 時価情報
+	g.AddSubCommand(gocli.NewCommand("start", "現値情報の取得開始").SetAction(startGetPrice))
+	g.AddSubCommand(gocli.NewCommand("stop", "現値情報の取得停止").SetAction(stopGetPrice))
+
 	return g.Run()
 }

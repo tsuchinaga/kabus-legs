@@ -60,3 +60,12 @@ func Test_NewSymbolController(t *testing.T) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
 }
+
+func Test_NewPriceController(t *testing.T) {
+	t.Parallel()
+	want := controller.NewPrice(usecase.NewPrice(service.NewPriceWebSocket(kabu.GetPrice(store.GetSetting(), nil))))
+	got := NewPriceController()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}

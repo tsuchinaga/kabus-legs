@@ -1,6 +1,10 @@
 package controller
 
-import "gitlab.com/tsuchinaga/kabus-legs/app/value"
+import (
+	"time"
+
+	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+)
 
 type testSettingUseCase struct {
 	getToken1    string
@@ -36,3 +40,15 @@ type testSettingView struct {
 func (t *testSettingView) SettingStatus(value.SettingStatus, error) string {
 	return t.settingStatus
 }
+
+type testPriceUseCase struct {
+	startGetPrice   error
+	startReturnWait time.Duration
+	stopGetPrice    error
+}
+
+func (t *testPriceUseCase) StartGetPrice() error {
+	time.Sleep(t.startReturnWait)
+	return t.startGetPrice
+}
+func (t *testPriceUseCase) StopGetPrice() error { return t.stopGetPrice }

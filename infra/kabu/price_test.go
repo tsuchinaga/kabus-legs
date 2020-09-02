@@ -12,49 +12,19 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
-func Test_NewPrice(t *testing.T) {
-	// t.Parallel() // グローバル変数にアクセスするので直列テスト
-	tests := []struct {
-		name    string
-		priceWS repository.PriceWebSocket
-		want1   bool
-		want2   bool
-	}{
-		{name: "priceWSがnilなら新たに生成されて返される",
-			priceWS: nil,
-			want1:   true},
-		{name: "生成済みならWebSocketIsStartedErrorが返される",
-			priceWS: &price{},
-			want2:   true},
-	}
-
-	for _, test := range tests {
-		test := test
-		t.Run(test.name, func(t *testing.T) {
-			// t.Parallel() // グローバル変数にアクセスするので直列テスト
-			priceWS = test.priceWS
-			got1, got2 := NewPrice(&testSettingStore{}, func(v value.Price) error { return nil })
-			if test.want1 != (got1 != nil) || test.want2 != (got2 != nil) {
-				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
-			}
-		})
-	}
-}
-
 func Test_GetPrice(t *testing.T) {
 	// t.Parallel() // グローバル変数にアクセスするので直列テスト
 	tests := []struct {
 		name    string
 		priceWS repository.PriceWebSocket
-		want1   bool
-		want2   bool
+		want    bool
 	}{
-		{name: "priceWSがあればそれを返す",
-			priceWS: &price{},
-			want1:   true},
-		{name: "priceWSがなければエラー",
+		{name: "priceWSがnilなら新たに生成されて返される",
 			priceWS: nil,
-			want2:   true},
+			want:    true},
+		{name: "生成済みならそれを返す",
+			priceWS: &price{},
+			want:    true},
 	}
 
 	for _, test := range tests {
@@ -62,9 +32,9 @@ func Test_GetPrice(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			// t.Parallel() // グローバル変数にアクセスするので直列テスト
 			priceWS = test.priceWS
-			got1, got2 := GetPrice()
-			if test.want1 != (got1 != nil) || test.want2 != (got2 != nil) {
-				t.Errorf("%s error\nwant: %+v, %+v\ngot: %+v, %+v\n", t.Name(), test.want1, test.want2, got1, got2)
+			got := GetPrice(&testSettingStore{}, func(v value.Price) error { return nil })
+			if test.want != (got != nil) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
 			}
 		})
 	}

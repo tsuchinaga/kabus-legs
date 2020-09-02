@@ -16,13 +16,14 @@ var (
 	priceWSMtx sync.Mutex
 )
 
-// NewPrice - 新しい現値WebSocketを生成する
-func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (repository.PriceWebSocket, error) {
+// GetPrice - 新しい現値WebSocketを生成する
+func GetPrice(settingStore repository.SettingStore, f func(value.Price) error) repository.PriceWebSocket {
 	priceWSMtx.Lock()
 	defer priceWSMtx.Unlock()
 
+	// 既に存在しているなら存在していたのを返す
 	if priceWS != nil {
-		return nil, app.WebSocketIsStartedError
+		return priceWS
 	}
 
 	priceWS = &price{
@@ -40,18 +41,7 @@ func NewPrice(settingStore repository.SettingStore, f func(value.Price) error) (
 		}),
 	}
 
-	return priceWS, nil
-}
-
-// GetPrice - 既存の現値WebSocketを取得する
-func GetPrice() (repository.PriceWebSocket, error) {
-	priceWSMtx.Lock()
-	defer priceWSMtx.Unlock()
-
-	if priceWS == nil {
-		return nil, app.UninitializedError
-	}
-	return priceWS, nil
+	return priceWS
 }
 
 // price - 現値WebSocket
@@ -89,6 +79,12 @@ func (p *price) Stop() error {
 
 	p.started = false
 	p.mtx.Unlock()
+
+	defer func() {
+		priceWSMtx.Lock()
+		priceWS = nil
+		priceWSMtx.Unlock()
+	}()
 
 	if err := p.priceWSRequester.Close(); err != nil {
 		return fmt.Errorf("%v: %w", err, app.APIRequestError)
