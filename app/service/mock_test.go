@@ -85,9 +85,10 @@ type testTickStore struct {
 		price value.Price
 		label string
 	}
+	get []value.Price
 }
 
-func (t *testTickStore) Get(value.Symbol, string) []value.Price { panic("implement me") }
+func (t *testTickStore) Get(value.Symbol, string) []value.Price { return t.get }
 func (t *testTickStore) Add(price value.Price, label string) {
 	if t.addHis == nil {
 		t.addHis = []struct {
@@ -99,4 +100,23 @@ func (t *testTickStore) Add(price value.Price, label string) {
 		price value.Price
 		label string
 	}{price: price, label: label})
+}
+
+type testLegStore struct {
+	getN   []value.FourPrice
+	get1   []value.FourPrice
+	addHis []value.FourPrice
+}
+
+func (t *testLegStore) Add(arg value.FourPrice) {
+	if t.addHis == nil {
+		t.addHis = []value.FourPrice{}
+	}
+	t.addHis = append(t.addHis, arg)
+}
+func (t *testLegStore) Get(_ value.Symbol, legPeriod int) []value.FourPrice {
+	if legPeriod == 1 {
+		return t.get1
+	}
+	return t.getN
 }
