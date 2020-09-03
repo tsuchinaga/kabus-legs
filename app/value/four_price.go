@@ -8,5 +8,6 @@ type FourPrice struct {
 	High      float64 // 高値
 	Low       float64 // 安値
 	Close     float64 // 終値
+	LegPeriod int     // 足の長さ(分)
 	IsVirtual bool    // 仮想足
 }
