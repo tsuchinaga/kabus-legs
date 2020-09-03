@@ -30,3 +30,27 @@ func Test_Name(t *testing.T) {
 		})
 	}
 }
+
+func Test_Price_Symbol(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name  string
+		price Price
+		want  Symbol
+	}{
+		{name: "銘柄コードと市場から銘柄情報を作って取り出す",
+			price: Price{SymbolCode: "1234", Exchange: ExchangeT},
+			want:  Symbol{SymbolCode: "1234", Exchange: ExchangeT}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got := test.price.Symbol()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
