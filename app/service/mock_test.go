@@ -1,6 +1,8 @@
 package service
 
 import (
+	"time"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
@@ -120,3 +122,7 @@ func (t *testLegStore) Get(_ value.Symbol, legPeriod int) []value.FourPrice {
 	}
 	return t.getN
 }
+
+type testClock struct{ now time.Time }
+
+func (t *testClock) Now() time.Time { return t.now }
