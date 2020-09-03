@@ -87,6 +87,7 @@ type testTickStore struct {
 	}
 }
 
+func (t *testTickStore) Get(value.Symbol, string) []value.Price { panic("implement me") }
 func (t *testTickStore) Add(price value.Price, label string) {
 	if t.addHis == nil {
 		t.addHis = []struct {

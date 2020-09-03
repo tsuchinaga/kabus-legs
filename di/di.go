@@ -1,8 +1,6 @@
 package di
 
 import (
-	"fmt"
-
 	"gitlab.com/tsuchinaga/kabus-legs/app/service"
 	"gitlab.com/tsuchinaga/kabus-legs/app/usecase"
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
@@ -41,7 +39,12 @@ func NewSymbolController() controller.Symbol {
 
 // NewPriceController - DI済みの価格コントローラの生成
 func NewPriceController() controller.Price {
-	f := func(price value.Price) error { fmt.Printf("%+v\n", price); return nil } // TODO serviceから適切な関数をとるようにする
+	f := func(price value.Price) error {
+		tickService := service.NewTick(store.GetTick())
+		tickService.SavePrice(price)
+		return nil
+	}
+
 	return controller.NewPrice(
 		usecase.NewPrice(
 			service.NewPriceWebSocket(
