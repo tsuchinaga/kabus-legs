@@ -40,3 +40,74 @@ func Test_clock_NowLabel(t *testing.T) {
 		})
 	}
 }
+
+func Test_clock_NowTime(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		now  time.Time
+		want time.Time
+	}{
+		{name: "日時から時分秒を取り出してtime.Timeを作る",
+			now:  time.Date(2020, 9, 3, 14, 53, 22, 0, time.Local),
+			want: time.Date(0, 1, 1, 14, 53, 22, 0, time.Local)},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			service := &clock{clock: &testClock{now: test.now}}
+			got := service.NowTime()
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
+
+func Test_clock_IsCreateLeg(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		now  time.Time
+		arg  int
+		want bool
+	}{
+		{name: "09:00:00はfalse",
+			now:  time.Date(0, 1, 1, 9, 0, 0, 0, time.Local),
+			arg:  1,
+			want: false},
+		{name: "15:02:00はfalse",
+			now:  time.Date(0, 1, 1, 15, 2, 0, 0, time.Local),
+			arg:  1,
+			want: false},
+		{name: "09:03:00に3分足はtrue",
+			now:  time.Date(0, 1, 1, 9, 3, 0, 0, time.Local),
+			arg:  3,
+			want: true},
+		{name: "09:03:00に5分足はfalse",
+			now:  time.Date(0, 1, 1, 9, 3, 0, 0, time.Local),
+			arg:  5,
+			want: false},
+		{name: "14:50:00に5分足はtrue",
+			now:  time.Date(0, 1, 1, 14, 50, 0, 0, time.Local),
+			arg:  5,
+			want: true},
+		{name: "14:50:00に20分足はfalse",
+			now:  time.Date(0, 1, 1, 14, 50, 0, 0, time.Local),
+			arg:  20,
+			want: false},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got := NewClock(&testClock{now: test.now}).IsCreateLeg(test.arg)
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}
