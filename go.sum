@@ -1,5 +1,7 @@
 gitlab.com/tsuchinaga/go-kabusapi v1.0.1 h1:PahTjKKKuAjJJTCQWVQ3ABIHobGiMO6lLIMIg2qi2vQ=
 gitlab.com/tsuchinaga/go-kabusapi v1.0.1/go.mod h1:yrhgbJRW5L/SaQorC/9Eo8o6KpCimnUf6DcVOukDzJk=
+gitlab.com/tsuchinaga/go-kabusapi v1.1.0 h1:M/12YmIcBV5Q8hstLwvae3ALYnDjv9T1JAZ5mmZk2Jw=
+gitlab.com/tsuchinaga/go-kabusapi v1.1.0/go.mod h1:yrhgbJRW5L/SaQorC/9Eo8o6KpCimnUf6DcVOukDzJk=
 gitlab.com/tsuchinaga/gocli v0.0.4 h1:U29S/NFJclLPQspuDnpT8rpHIHX9OcOH8Lg/0Ip2vFM=
 gitlab.com/tsuchinaga/gocli v0.0.4/go.mod h1:WCehMGHz/6to9l+5yWXv9s0QfkoFsWnYuK/OqPEK1Yw=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

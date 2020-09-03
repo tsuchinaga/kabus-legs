@@ -40,7 +40,7 @@ func (k *kabu) GetToken() (string, error) {
 // RegisterSymbol - 銘柄登録に引数の銘柄を渡す
 func (k *kabu) RegisterSymbol(symbolCode string, exchange value.Exchange) error {
 	_, err := k.registerRequester.Exec(kabus.RegisterRequest{
-		Symbols: []kabus.RegistSymbol{{Symbol: symbolCode, Exchange: toKabusExchange(exchange)}},
+		Symbols: []kabus.RegisterSymbol{{Symbol: symbolCode, Exchange: toKabusExchange(exchange)}},
 	})
 	if err != nil {
 		return fmt.Errorf("%v: %w", err, app.APIRequestError)
@@ -51,7 +51,7 @@ func (k *kabu) RegisterSymbol(symbolCode string, exchange value.Exchange) error 
 // UnregisterSymbol - 銘柄登録解除に引数の銘柄を渡す
 func (k *kabu) UnregisterSymbol(symbolCode string, exchange value.Exchange) error {
 	_, err := k.unregisterRequester.Exec(kabus.UnregisterRequest{
-		Symbols: []kabus.UnregistSymbol{{Symbol: symbolCode, Exchange: toKabusExchange(exchange)}},
+		Symbols: []kabus.UnregisterSymbol{{Symbol: symbolCode, Exchange: toKabusExchange(exchange)}},
 	})
 	if err != nil {
 		return fmt.Errorf("%v: %w", err, app.APIRequestError)
