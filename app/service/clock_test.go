@@ -111,3 +111,29 @@ func Test_clock_IsCreateLeg(t *testing.T) {
 		})
 	}
 }
+
+func Test_clock_PrevLabel(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name string
+		now  time.Time
+		arg  int
+		want string
+	}{
+		{name: "09:22:00の10分前なら09:12:00のラベルが出る",
+			now:  time.Date(2020, 9, 3, 9, 22, 0, 0, time.Local),
+			arg:  10,
+			want: "20200903091200"},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			got := (&clock{clock: &testClock{now: test.now}}).PrevLabel(test.arg)
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
+	}
+}

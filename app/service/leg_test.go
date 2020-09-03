@@ -201,3 +201,14 @@ func Test_leg_CreateMinutesLeg(t *testing.T) {
 		})
 	}
 }
+
+func Test_NewLeg(t *testing.T) {
+	t.Parallel()
+	tickStore := &testTickStore{}
+	legStore := &testLegStore{}
+	want := &leg{tickStore: tickStore, legStore: legStore}
+	got := NewLeg(tickStore, legStore)
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}

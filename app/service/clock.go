@@ -9,6 +9,7 @@ import (
 // Clock - 時計サービスのインターフェース
 type Clock interface {
 	NowLabel() string
+	PrevLabel(prev int) string
 	NowTime() time.Time
 	IsCreateLeg(legPeriod int) bool
 }
@@ -32,6 +33,11 @@ type clock struct {
 // NowLabel - 現在日時のラベル
 func (s *clock) NowLabel() string {
 	return s.clock.Now().Format("20060102150400")
+}
+
+// PrevLabel - 現在日時から指定分前のラベル
+func (s *clock) PrevLabel(prev int) string {
+	return s.clock.Now().Add(-1 * time.Duration(prev) * time.Minute).Format("20060102150400")
 }
 
 // NowTime - 現在日時をとって時分秒だけを抽出した日時を返す

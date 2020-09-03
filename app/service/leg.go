@@ -12,6 +12,11 @@ type Leg interface {
 	SaveMinuteLeg(fourPrice value.FourPrice)
 }
 
+// NewLeg - 足サービスの生成
+func NewLeg(tickStore repository.TickStore, legStore repository.LegStore) Leg {
+	return &leg{tickStore: tickStore, legStore: legStore}
+}
+
 // leg - 足サービス
 type leg struct {
 	tickStore repository.TickStore
