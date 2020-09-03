@@ -95,11 +95,64 @@ func Test_tick_Add(t *testing.T) {
 	}
 }
 
-func Test_NewTick(t *testing.T) {
+func Test_GetTick(t *testing.T) {
 	t.Parallel()
 	want := &tick{store: map[value.Symbol]map[string][]value.Price{}}
-	got := NewTick()
+	got := GetTick()
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}
+
+func Test_tick_Get(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name  string
+		store map[value.Symbol]map[string][]value.Price
+		arg1  value.Symbol
+		arg2  string
+		want  []value.Price
+	}{
+		{name: "storeがnilなら空slice", want: []value.Price{}},
+		{name: "symbolがなければ空slice",
+			store: map[value.Symbol]map[string][]value.Price{},
+			arg1:  value.Symbol{SymbolCode: "1234", Exchange: value.ExchangeT},
+			want:  []value.Price{}},
+		{name: "labelがなければ空slice",
+			store: map[value.Symbol]map[string][]value.Price{
+				{SymbolCode: "1234", Exchange: value.ExchangeT}: {},
+			},
+			arg1: value.Symbol{SymbolCode: "1234", Exchange: value.ExchangeT},
+			arg2: "20200903105000",
+			want: []value.Price{}},
+		{name: "指定したデータがあれば該当sliceが返される",
+			store: map[value.Symbol]map[string][]value.Price{
+				{SymbolCode: "1234", Exchange: value.ExchangeT}: {
+					"20200903105000": {
+						{Price: 23000},
+						{Price: 22900},
+						{Price: 22800},
+					},
+				},
+			},
+			arg1: value.Symbol{SymbolCode: "1234", Exchange: value.ExchangeT},
+			arg2: "20200903105000",
+			want: []value.Price{
+				{Price: 23000},
+				{Price: 22900},
+				{Price: 22800},
+			}},
+	}
+
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+			store := &tick{store: test.store}
+			got := store.Get(test.arg1, test.arg2)
+			if !reflect.DeepEqual(test.want, got) {
+				t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), test.want, got)
+			}
+		})
 	}
 }
