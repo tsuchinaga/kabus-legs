@@ -4,6 +4,7 @@ import (
 	"gitlab.com/tsuchinaga/kabus-legs/app/service"
 	"gitlab.com/tsuchinaga/kabus-legs/app/usecase"
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
+	"gitlab.com/tsuchinaga/kabus-legs/infra/clock"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/kabu"
 	"gitlab.com/tsuchinaga/kabus-legs/infra/store"
 	"gitlab.com/tsuchinaga/kabus-legs/ui/controller"
@@ -49,6 +50,19 @@ func NewPriceController() controller.Price {
 		usecase.NewPrice(
 			service.NewPriceWebSocket(
 				kabu.GetPrice(store.GetSetting(), f))))
+}
+
+func NewLegUseCase() usecase.Leg {
+	return usecase.NewLeg(
+		service.NewSymbol(
+			store.GetSymbol(),
+			kabu.NewKabuAPI(
+				store.GetSetting())),
+		service.NewLeg(
+			store.GetTick(),
+			store.GetLeg()),
+		service.NewClock(
+			clock.NewClock()))
 }
 
 // NewSettingUseCase - DI済みの設定ユースケースを生成する

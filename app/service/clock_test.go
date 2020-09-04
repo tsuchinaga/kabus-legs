@@ -9,7 +9,11 @@ import (
 func Test_NewClock(t *testing.T) {
 	t.Parallel()
 	c := &testClock{}
-	want := &clock{clock: c}
+	want := &clock{
+		clock:    c,
+		legStart: time.Date(0, 1, 1, 9, 0, 1, 0, time.Local),
+		legEnd:   time.Date(0, 1, 1, 15, 1, 1, 0, time.Local),
+	}
 	got := NewClock(c)
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)

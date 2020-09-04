@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"gitlab.com/tsuchinaga/kabus-legs/infra/clock"
+
 	"gitlab.com/tsuchinaga/kabus-legs/ui/controller"
 	"gitlab.com/tsuchinaga/kabus-legs/ui/view"
 
@@ -65,6 +67,15 @@ func Test_NewPriceController(t *testing.T) {
 	t.Parallel()
 	want := controller.NewPrice(usecase.NewPrice(service.NewPriceWebSocket(kabu.GetPrice(store.GetSetting(), nil))))
 	got := NewPriceController()
+	if !reflect.DeepEqual(want, got) {
+		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
+	}
+}
+
+func Test_NewLegUseCase(t *testing.T) {
+	t.Parallel()
+	want := usecase.NewLeg(service.NewSymbol(store.GetSymbol(), kabu.NewKabuAPI(store.GetSetting())), service.NewLeg(store.GetTick(), store.GetLeg()), service.NewClock(clock.NewClock()))
+	got := NewLegUseCase()
 	if !reflect.DeepEqual(want, got) {
 		t.Errorf("%s error\nwant: %+v\ngot: %+v\n", t.Name(), want, got)
 	}
