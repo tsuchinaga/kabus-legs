@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"time"
+
 	"gitlab.com/tsuchinaga/kabus-legs/app/value"
 )
 
@@ -66,3 +68,32 @@ type testPriceService struct {
 
 func (t *testPriceService) StartWebSocket() error { return t.startWebSocket }
 func (t *testPriceService) StopWebSocket() error  { return t.stopWebSocket }
+
+type testLegService struct {
+	createOneMinuteLeg    value.FourPrice
+	createOneMinuteLegNum int
+	createMinutesLeg      value.FourPrice
+	createMinutesLegNum   int
+	saveMinuteLegNum      int
+}
+
+func (t *testLegService) CreateOneMinuteLeg(value.Symbol, string) value.FourPrice {
+	t.createOneMinuteLegNum++
+	return t.createOneMinuteLeg
+}
+func (t *testLegService) CreateMinutesLeg(value.Symbol, string, int) value.FourPrice {
+	t.createMinutesLegNum++
+	return t.createMinutesLeg
+}
+func (t *testLegService) SaveMinuteLeg(value.FourPrice) {
+	t.saveMinuteLegNum++
+}
+
+type testClockService struct {
+	prevLabel string
+}
+
+func (t *testClockService) NowLabel() string     { panic("implement me") }
+func (t *testClockService) PrevLabel(int) string { return t.prevLabel }
+func (t *testClockService) NowTime() time.Time   { panic("implement me") }
+func (t *testClockService) IsCreateLeg(int) bool { return true }
